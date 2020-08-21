@@ -1,12 +1,21 @@
 public class Duke {
+    // Formatting
+    private static String dashOutline = "----------------------------------------------------------------------";
+    private static String message = "";
+    
+    public static void reply(String msg) {
+        System.out.println(msg + dashOutline);
+    }
+
     public static void main(String[] args) {
-        // Formatting
-        String dashOutline = "--------------------------------------------------";
+        reply(message);
 
         // Welcome message
-        System.out.println(dashOutline + "\nHello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "\nWhat can I do for you?\n" + dashOutline);
+        message = "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() + ". The " +
+                "time now is " + DateTimeManager.getTime() + "\nWhat can I do for you?\n";
+        reply(message);
 
-        // Good bye message
-        System.out.println("Bye. Hope to see you again soon!\n" + dashOutline);
+        message = "Bye. Hope to see you again soon!\n";
+        reply(message);
     }
 }
