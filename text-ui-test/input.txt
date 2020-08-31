@@ -1,0 +1,10 @@
+list
+todo watch lecture
+list
+event watch soe tv /at 9pm
+list
+deadline homework /by tmr
+list
+done 2
+list
+bye
