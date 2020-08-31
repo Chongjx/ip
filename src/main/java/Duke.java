@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,24 +10,24 @@ public class Duke {
         COMMAND_LIST,
         COMMAND_MARKDONE,
         COMMAND_EXIT,
+        COMMAND_UNRECOGNIZE,
     }
 
     // Formatting
-    private static String formatDashes = "----------------------------------------------------------------------";
-    private static String formatTwoTabs = "    ";
-    private static String formatFourTabs = "        ";
+    private final static String formatDashes = "----------------------------------------------------------------------";
+    private final static String formatTwoTabs = "    ";
+    private final static String formatFourTabs = "        ";
 
     // String object to hold any user input or output message
     private static String message = "";
+    private static String[] splitMessage;
     private static String command = "";
-    // Types of command that the user entered
-    private static COMMANDS userCommand = COMMANDS.COMMAND_INIT;
 
     private static Scanner in = new Scanner(System.in);
 
     // Characters for tick and cross
-    private static char tick = '\u2713';
-    private static char cross = '\u2718';
+    public static char tick = '\u2713';
+    public static char cross = '\u2718';
 
     // Boolean for exit app
     private static boolean isExit = false;
@@ -56,29 +55,50 @@ public class Duke {
 
     // Add task
     private static void AddTask() {
-        // create a new task object
-        Task newTask = new Task(message);
+        Task newTask;
+
+        message = formatTwoTabs + "Added ";
+        // Create new task object based on the command type
+        switch(command.toUpperCase()) {
+        case "DEADLINE":
+            splitMessage = splitMessage[1].split("/by ", 2);
+            newTask = new Deadline(splitMessage[0], splitMessage[1]);
+            message += "a deadline task ";
+            break;
+        case "EVENT":
+            splitMessage = splitMessage[1].split("/at ", 2);
+            newTask = new Event(splitMessage[0], splitMessage[1]);
+            message += "an event ";
+            break;
+        case "TODO":
+        default:
+            newTask = new Todo(splitMessage[1]);
+            message += "a todo task ";
+            break;
+        }
+
         // add to the list
         taskList.add(newTask);
         // print out the newly added task
-        reply(formatTwoTabs + "Added task " + taskList.size() + ". " + message + System.lineSeparator());
+        message += newTask + "!" + System.lineSeparator() + formatTwoTabs + "Now you have " + taskList.size() +
+                " task(s) in the list" + System.lineSeparator();
+        reply(message);
     }
 
     // List task
     private static void ListTask() {
-        String output = "";
         int index = 1;
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            output = formatTwoTabs + "There are currently no task in the list! >.<" + System.lineSeparator();
+            message = formatTwoTabs + "There are currently no task in the list! >.<" + System.lineSeparator();
         } else {
-            output = formatTwoTabs + "Here is your list of task(s):" + System.lineSeparator();
+            message = formatTwoTabs + "Here is your list of task(s):" + System.lineSeparator();
             for (Task i : taskList) {
-                output += formatFourTabs + index + ".[" + (i.getIsDone() ? tick : cross) + "]" + i.getDescription() + System.lineSeparator();
+                message += formatFourTabs + index + "." + i + System.lineSeparator();
                 ++index;
             }
         }
-        reply(output);
+        reply(message);
     }
 
     // Mark tasks that are done
@@ -86,14 +106,14 @@ public class Duke {
         // Get the index of the space
         int spacingIndex = message.indexOf(" ");
         // Get the index that the user mark done
-        int taskIndex = Integer.parseInt(message.substring(spacingIndex + 1, message.length()));
+        int taskIndex = Integer.parseInt(message.substring(spacingIndex + 1));
 
         // Do a valid check if within number of task
         if (taskIndex > 0 && taskIndex <= taskList.size()) {
             Task task = taskList.get(taskIndex - 1);
             task.setIsDone(true);
-            message = formatTwoTabs + "Completed task " + taskIndex + "!" + System.lineSeparator() + formatFourTabs + "[" +
-                    (task.getIsDone() ? tick : cross) + "]" + task.getDescription() + System.lineSeparator();
+            message = formatTwoTabs + "Completed task " + taskIndex + "!" + System.lineSeparator() + formatFourTabs + task
+                    + System.lineSeparator();
         } else {
             message = formatTwoTabs + "Ops, you have entered an invalid task number! You have " + taskList.size() +
                     " task(s)!" + System.lineSeparator();
@@ -106,9 +126,13 @@ public class Duke {
         // reply for formatting
         reply("");
 
-        command = (message.split(" "))[0];
+        // Split the message to the first word and the remaining message
+        splitMessage = (message.split(" ", 2));
+        command = splitMessage[0];
 
         // Set the type of user command based on input
+        COMMANDS userCommand;
+
         switch (command.toUpperCase()) {
         case "LIST":
             userCommand = COMMANDS.COMMAND_LIST;
@@ -119,15 +143,18 @@ public class Duke {
         case "BYE":
             userCommand = COMMANDS.COMMAND_EXIT;
             break;
-        default:
+        case "TODO":
+        case "EVENT":
+        case "DEADLINE":
             userCommand = COMMANDS.COMMAND_ADD;
+            break;
+        default:
+            userCommand = COMMANDS.COMMAND_UNRECOGNIZE;
             break;
         }
 
         // Handles different user command
         switch (userCommand) {
-        case COMMAND_INIT:
-            break;
         case COMMAND_ADD:
             AddTask();
             break;
@@ -139,6 +166,10 @@ public class Duke {
             break;
         case COMMAND_EXIT:
             isExit = true;
+            break;
+        case COMMAND_UNRECOGNIZE:
+        case COMMAND_INIT:
+        default:
             break;
         }
     }
