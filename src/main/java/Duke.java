@@ -40,8 +40,8 @@ public class Duke {
         System.out.println(msg + formatDashes);
     }
 
+    // Welcome message
     private static void printWelcomeMessage() {
-        // Welcome message
         message = formatTwoTabs + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
                 ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + formatTwoTabs + "What can I" +
                 " do for you?" + System.lineSeparator();
@@ -87,12 +87,12 @@ public class Duke {
 
     // List task
     private static void ListTask() {
-        int index = 1;
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
             message = formatTwoTabs + "There are currently no task in the list! >.<" + System.lineSeparator();
         } else {
             message = formatTwoTabs + "Here is your list of task(s):" + System.lineSeparator();
+            int index = 1;
             for (Task i : taskList) {
                 message += formatFourTabs + index + "." + i + System.lineSeparator();
                 ++index;
@@ -103,10 +103,8 @@ public class Duke {
 
     // Mark tasks that are done
     private static void MarkTaskDone() {
-        // Get the index of the space
-        int spacingIndex = message.indexOf(" ");
-        // Get the index that the user mark done
-        int taskIndex = Integer.parseInt(message.substring(spacingIndex + 1));
+        // Get the task index to be marked completed
+        int taskIndex = Integer.parseInt(splitMessage[1]);
 
         // Do a valid check if within number of task
         if (taskIndex > 0 && taskIndex <= taskList.size()) {
@@ -126,7 +124,7 @@ public class Duke {
         // reply for formatting
         reply("");
 
-        // Split the message to the first word and the remaining message
+        // Split the message to the command and the remaining message
         splitMessage = (message.split(" ", 2));
         command = splitMessage[0];
 
