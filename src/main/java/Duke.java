@@ -36,8 +36,8 @@ public class Duke {
     private static List<Task> taskList = new ArrayList<>();
 
     // Print message with formatting
-    private static void reply(String msg) {
-        System.out.println(msg + formatDashes);
+    private static void reply(String message) {
+        System.out.println(message + formatDashes);
     }
 
     // Welcome message
@@ -54,7 +54,7 @@ public class Duke {
     }
 
     // Add task
-    private static void AddTask() {
+    private static void addTask() {
         Task newTask;
 
         message = formatTwoTabs + "Added ";
@@ -86,7 +86,7 @@ public class Duke {
     }
 
     // List task
-    private static void ListTask() {
+    private static void listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
             message = formatTwoTabs + "There are currently no task in the list! >.<" + System.lineSeparator();
@@ -102,7 +102,7 @@ public class Duke {
     }
 
     // Mark tasks that are done
-    private static void MarkTaskDone() {
+    private static void markTaskDone() {
         // Get the task index to be marked completed
         int taskIndex = Integer.parseInt(splitMessage[1]);
 
@@ -119,7 +119,7 @@ public class Duke {
         reply(message);
     }
 
-    private static void HandleUserInput() {
+    private static void handleUserInput() {
         message = in.nextLine();
         // reply for formatting
         reply("");
@@ -154,13 +154,13 @@ public class Duke {
         // Handles different user command
         switch (userCommand) {
         case COMMAND_ADD:
-            AddTask();
+            addTask();
             break;
         case COMMAND_LIST:
-            ListTask();
+            listTask();
             break;
         case COMMAND_MARKDONE:
-            MarkTaskDone();
+            markTaskDone();
             break;
         case COMMAND_EXIT:
             isExit = true;
@@ -175,7 +175,7 @@ public class Duke {
     public static void main(String[] args) {
         printWelcomeMessage();
         do {
-            HandleUserInput();
+            handleUserInput();
         }
         while (!isExit);
         printExitMessage();

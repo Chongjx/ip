@@ -30,6 +30,13 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[" + (isDone ? Duke.tick : Duke.cross) + "] " + description;
+        String message = "[";
+        if (isDone) {
+            message += Duke.tick;
+        } else {
+            message += Duke.cross;
+        }
+        message += "] " + description;
+        return message;
     }
 }
