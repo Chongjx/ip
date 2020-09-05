@@ -1,6 +1,6 @@
 package duke.task;
 
-import duke.manager.Formatter;
+import duke.util.Formatter;
 
 public class Task {
     protected String description;

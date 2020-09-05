@@ -1,8 +1,8 @@
 package duke;
 
 import duke.manager.DateTimeManager;
-import duke.manager.DukeException;
-import duke.manager.Formatter;
+import duke.util.DukeException;
+import duke.util.Formatter;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
