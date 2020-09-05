@@ -1,3 +1,13 @@
+package duke;
+
+import duke.manager.DateTimeManager;
+import duke.manager.DukeException;
+import duke.manager.Formatter;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.Todo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,14 +23,6 @@ public class Duke {
         COMMAND_UNRECOGNIZE,
         COMMAND_MISSING,
     }
-
-    // Formatting
-    private final static String formatDashes = "----------------------------------------------------------------------";
-    private final static String formatTwoTabs = "    ";
-    private final static String formatFourTabs = "        ";
-    // Characters for tick and cross
-    public final static char tick = '\u2713';
-    public final static char cross = '\u2718';
 
     // String object to hold any user input or output message
     private static String message = "";
@@ -38,32 +40,27 @@ public class Duke {
     // User task list
     private static List<Task> taskList = new ArrayList<>();
 
-    // Print message with formatting
-    private static void reply(String message) {
-        System.out.println(message + System.lineSeparator() + formatDashes);
-    }
-
     // Set up for default messages
     private static void printDefaultMessage(Commands command) {
         switch (command) {
         case COMMAND_INIT:
-            message = formatTwoTabs + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
-                    ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + formatTwoTabs +
+            message = Formatter.formatTwoTabs + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
+                    ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + Formatter.formatTwoTabs +
                     "What can I do for you?";
             break;
         case COMMAND_EXIT:
-            message = formatTwoTabs + "Bye! Hope to see you again soon!";
+            message = Formatter.formatTwoTabs + "Bye! Hope to see you again soon!";
             break;
         case COMMAND_MISSING:
-            message = formatTwoTabs + "You did not enter anything, did you?";
+            message = Formatter.formatTwoTabs + "You did not enter anything, did you?";
             break;
         case COMMAND_UNRECOGNIZE:
-            message = formatTwoTabs + "Sorry I don't know what that means... >.<";
+            message = Formatter.formatTwoTabs + "Sorry I don't know what that means... >.<";
             break;
         default:
             message = "";
         }
-        reply(message);
+        Formatter.reply(message);
     }
 
     // Validate the info for adding task
@@ -88,30 +85,6 @@ public class Duke {
         } catch (ArrayIndexOutOfBoundsException exception) {
             throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
         }
-
-
-        /*try {
-            if (identifier.equals("")) {
-                // missing description
-                if (splitMessage[1].equals("")) {
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
-                }
-            } else if (!splitMessage[1].contains(identifier) && !splitMessage[1].equals("")) {
-                // validation for deadline and event, missing identifier (/by or /at)
-                throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_IDENTIFIER);
-            } else {
-                splitMessage = splitMessage[1].split(identifier, 2);
-                // missing description
-                if (splitMessage[0].equals("")) {
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
-                } else if (splitMessage[1].equals("")) {
-                    // missing date/time info
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DATETIME);
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException exception) {
-            throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
-        }*/
     }
 
     // Add task
@@ -119,7 +92,7 @@ public class Duke {
         try {
             Task newTask = null;
 
-            message = formatTwoTabs + "Added ";
+            message = Formatter.formatTwoTabs + "Added ";
             // Create new task object based on the command type
             switch (command.toUpperCase()) {
             case "DEADLINE":
@@ -141,12 +114,12 @@ public class Duke {
             // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            message += newTask + "!" + System.lineSeparator() + formatTwoTabs + "Now you have " + taskList.size() +
+            message += newTask + "!" + System.lineSeparator() + Formatter.formatTwoTabs + "Now you have " + taskList.size() +
                     " task(s) in the list";
         } catch (DukeException e) {
-            message = formatTwoTabs + e.getMessage();
+            message = Formatter.formatTwoTabs + e.getMessage();
         } finally {
-            reply(message);
+            Formatter.reply(message);
         }
     }
 
@@ -154,16 +127,16 @@ public class Duke {
     private static void listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            message = formatTwoTabs + "There are currently no task in the list! (*^▽^*)";
+            message = Formatter.formatTwoTabs + "There are currently no task in the list! (*^▽^*)";
         } else {
-            message = formatTwoTabs + "Here is your list of task(s):";
+            message = Formatter.formatTwoTabs + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                message += System.lineSeparator() + formatFourTabs + index + "." + i;
+                message += System.lineSeparator() + Formatter.formatFourTabs + index + "." + i;
                 ++index;
             }
         }
-        reply(message);
+        Formatter.reply(message);
     }
 
     // Mark tasks that are done
@@ -173,20 +146,20 @@ public class Duke {
             int taskIndex = Integer.parseInt(splitMessage[1]);
             Task task = taskList.get(taskIndex - 1);
             task.setIsDone(true);
-            message = formatTwoTabs + "Completed task " + taskIndex + "!" + System.lineSeparator() + formatFourTabs + task;
+            message = Formatter.formatTwoTabs + "Completed task " + taskIndex + "!" + System.lineSeparator() + Formatter.formatFourTabs + task;
         } catch (NumberFormatException exception) {
-            message = formatTwoTabs + "Invalid input, cannot convert to integer!";
+            message = Formatter.formatTwoTabs + "Invalid input, cannot convert to integer!";
         } catch (ArrayIndexOutOfBoundsException exception) {
-            message = formatTwoTabs + "You did not enter any value!";
+            message = Formatter.formatTwoTabs + "You did not enter any value!";
         } catch (IndexOutOfBoundsException exception) {
-            message = formatTwoTabs + "Ops, you have entered an invalid task number! You have " + taskList.size() +
+            message = Formatter.formatTwoTabs + "Ops, you have entered an invalid task number! You have " + taskList.size() +
                     " task(s)!";
         } finally {
-            reply(message);
+            Formatter.reply(message);
         }
     }
 
-    //
+    // Handles user input
     private static void handleUserInput() {
         message = in.nextLine();
 
@@ -217,7 +190,7 @@ public class Duke {
             break;
         }
 
-        // Handles different user command
+        // Process according to the command
         switch (userCommand) {
         case COMMAND_ADD:
             addTask();

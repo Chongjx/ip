@@ -1,3 +1,7 @@
+package duke.task;
+
+import duke.manager.Formatter;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -32,9 +36,9 @@ public class Task {
     public String toString() {
         String message = "[";
         if (isDone) {
-            message += Duke.tick;
+            message += Formatter.tick;
         } else {
-            message += Duke.cross;
+            message += Formatter.cross;
         }
         message += "] " + description;
         return message;

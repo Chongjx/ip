@@ -1,10 +1,22 @@
+blah
 list
+todo
 todo watch lecture
 list
-event watch soe tv /at 9pm
+event
+event test 1
+event test 1 /at
+event test 1 /at tmr
 list
-deadline homework /by tmr
+deadline
+deadline test 2
+deadline test 2 /by
+deadline test 2 /by tmr
 list
+done 0
+done hi
+done -1
+done 5
 done 2
 list
 bye

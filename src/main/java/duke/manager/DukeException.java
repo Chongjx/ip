@@ -1,3 +1,5 @@
+package duke.manager;
+
 public class DukeException extends Exception {
     public enum ExceptionType {
         EXCEPTION_MISSING_DESCRIPTION("You missed out on the description?! O.o"),
