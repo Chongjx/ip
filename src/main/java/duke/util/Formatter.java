@@ -8,9 +8,4 @@ public class Formatter {
     // Characters for tick and cross
     public final static char tick = '\u2713';
     public final static char cross = '\u2718';
-
-    // Print message with formatting
-    public static void reply(String message) {
-        System.out.println(message + System.lineSeparator() + formatDashes);
-    }
 }

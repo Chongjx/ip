@@ -6,6 +6,7 @@ public class Event extends Task {
     public Event(String description, String dateTime) {
         super(description);
         this.dateTime = dateTime;
+        this.taskType = "[E]";
     }
 
     public void setDateTime(String dateTime) {
@@ -18,6 +19,6 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + "(At: " + dateTime + ")";
+        return super.toString() + "(At:" + dateTime + ")";
     }
 }

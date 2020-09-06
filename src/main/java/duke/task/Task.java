@@ -2,18 +2,15 @@ package duke.task;
 
 import duke.util.Formatter;
 
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
-
-    public Task() {
-        this.description = "";
-        this.isDone = false;
-    }
+    protected String taskType;
 
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.taskType = "";
     }
 
     public String getDescription() {
@@ -32,9 +29,17 @@ public class Task {
         this.isDone = isDone;
     }
 
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
+    }
+
     @Override
     public String toString() {
-        String message = "[";
+        String message = taskType + "[";
         if (isDone) {
             message += Formatter.tick;
         } else {
