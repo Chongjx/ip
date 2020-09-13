@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Duke {
     // Print message with formatting
-    public static void reply(String message) {
+    private static void reply(String message) {
         System.out.println(message + System.lineSeparator() + Formatter.formatDashes);
     }
 
@@ -17,17 +17,18 @@ public class Duke {
         COMMAND_ADD,
         COMMAND_LIST,
         COMMAND_MARKDONE,
+        COMMAND_DELETE,
         COMMAND_EXIT,
         COMMAND_UNRECOGNIZE,
         COMMAND_MISSING,
     }
 
-    // String object to hold any user input or output message
-    private static String message = "";
-
     // Set the type of user command based on input
     private static Commands userCommand = Commands.COMMAND_INIT;
     private static Scanner in = new Scanner(System.in);
+
+    // String for replying
+    private static String replyMessage;
 
     // Boolean for exit app
     private static boolean isExit = false;
@@ -35,32 +36,34 @@ public class Duke {
     // Create a task manager
     private static TaskManager taskManager = new TaskManager();
 
-    // Set up for default messages
+    // Set up to print default messages
+    // Param: Commands command, used in switch case to set the proper replyMessage
     private static void printDefaultMessage(Commands command) {
         switch (command) {
         case COMMAND_INIT:
-            message = Formatter.formatTwoTabs + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
-                    ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + Formatter.formatTwoTabs +
-                    "What can I do for you?";
+            replyMessage = Formatter.formatOneTab + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
+                    DateTimeManager.getDay() + ". The " + "time now is " + DateTimeManager.getTime() + "." +
+                    System.lineSeparator() + Formatter.formatOneTab + "What can I do for you?";
             break;
         case COMMAND_EXIT:
-            message = Formatter.formatTwoTabs + "Bye! Hope to see you again soon!";
+            replyMessage = Formatter.formatOneTab + "Bye! Hope to see you again soon!";
             break;
         case COMMAND_MISSING:
-            message = Formatter.formatTwoTabs + "You did not enter anything, did you?";
+            replyMessage = Formatter.formatOneTab + "You did not enter anything, did you?";
             break;
         case COMMAND_UNRECOGNIZE:
-            message = Formatter.formatTwoTabs + "Sorry I don't know what that means... >.<";
+            replyMessage = Formatter.formatOneTab + "Sorry I don't know what that means... >.<";
             break;
         default:
-            message = "";
+            replyMessage = "";
         }
-        reply(message);
+        reply(replyMessage);
     }
 
     // Handles user input
     private static void handleUserInput() {
-        message = in.nextLine();
+        // String object to hold any user input or output message
+        String message = in.nextLine();
 
         // Split the message to the command and the remaining message
         String[] splitMessage = (message.split(" ", 2));
@@ -81,6 +84,9 @@ public class Duke {
         case "DEADLINE":
             userCommand = Commands.COMMAND_ADD;
             break;
+        case "DELETE":
+            userCommand = Commands.COMMAND_DELETE;
+            break;
         case "":
             userCommand = Commands.COMMAND_MISSING;
             break;
@@ -92,16 +98,20 @@ public class Duke {
         // Process according to the command
         switch (userCommand) {
         case COMMAND_ADD:
-            message = taskManager.addTask(splitMessage, command);
-            reply(message);
+            replyMessage = taskManager.addTask(splitMessage, command);
+            reply(replyMessage);
             break;
         case COMMAND_LIST:
-            message = taskManager.listTask();
-            reply(message);
+            replyMessage = taskManager.listTask();
+            reply(replyMessage);
             break;
         case COMMAND_MARKDONE:
-            message = taskManager.markTaskDone(splitMessage);
-            reply(message);
+            replyMessage = taskManager.markTaskDone(splitMessage);
+            reply(replyMessage);
+            break;
+        case COMMAND_DELETE:
+            replyMessage = taskManager.deleteTask(splitMessage);
+            reply(replyMessage);
             break;
         case COMMAND_EXIT:
             isExit = true;
