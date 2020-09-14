@@ -1,6 +1,7 @@
 package duke;
 
 import duke.manager.DateTimeManager;
+import duke.manager.IOManager;
 import duke.manager.TaskManager;
 import duke.util.Formatter;
 import java.util.Scanner;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 public class Duke {
     // Print message with formatting
     public static void reply(String message) {
-        System.out.println(message + System.lineSeparator() + Formatter.formatDashes);
+        System.out.println(message + System.lineSeparator() + Formatter.FORMAT_DASHES);
     }
 
     // types of command
@@ -39,18 +40,18 @@ public class Duke {
     private static void printDefaultMessage(Commands command) {
         switch (command) {
         case COMMAND_INIT:
-            message = Formatter.formatTwoTabs + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
-                    ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + Formatter.formatTwoTabs +
+            message = Formatter.FORMAT_TWO_TABS + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " + DateTimeManager.getDay() +
+                    ". The " + "time now is " + DateTimeManager.getTime() + "." + System.lineSeparator() + Formatter.FORMAT_TWO_TABS +
                     "What can I do for you?";
             break;
         case COMMAND_EXIT:
-            message = Formatter.formatTwoTabs + "Bye! Hope to see you again soon!";
+            message = Formatter.FORMAT_TWO_TABS + "Bye! Hope to see you again soon!";
             break;
         case COMMAND_MISSING:
-            message = Formatter.formatTwoTabs + "You did not enter anything, did you?";
+            message = Formatter.FORMAT_TWO_TABS + "You did not enter anything, did you?";
             break;
         case COMMAND_UNRECOGNIZE:
-            message = Formatter.formatTwoTabs + "Sorry I don't know what that means... >.<";
+            message = Formatter.FORMAT_TWO_TABS + "Sorry I don't know what that means... >.<";
             break;
         default:
             message = "";
@@ -104,6 +105,7 @@ public class Duke {
             reply(message);
             break;
         case COMMAND_EXIT:
+            IOManager.saveTaskList(taskManager.getTaskList());
             isExit = true;
             break;
         case COMMAND_UNRECOGNIZE:
@@ -117,6 +119,7 @@ public class Duke {
     }
 
     public static void main(String[] args) {
+        IOManager.loadTaskList(taskManager.getTaskList());
         printDefaultMessage(userCommand);
         do {
             handleUserInput();

@@ -56,7 +56,7 @@ public class TaskManager {
         String[] taskInfo;
         try {
             Task newTask = null;
-            returnMessage = Formatter.formatTwoTabs + "Added ";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "Added ";
             // Create new task object based on the command type
             switch (command.toUpperCase()) {
             case "DEADLINE":
@@ -78,10 +78,10 @@ public class TaskManager {
             // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            returnMessage += newTask + "!" + System.lineSeparator() + Formatter.formatTwoTabs + "Now you have " + taskList.size() +
+            returnMessage += newTask + "!" + System.lineSeparator() + Formatter.FORMAT_TWO_TABS + "Now you have " + taskList.size() +
                     " task(s) in the list";
         } catch (DukeException e) {
-            returnMessage = Formatter.formatTwoTabs + e.getMessage();
+            returnMessage = Formatter.FORMAT_TWO_TABS + e.getMessage();
         }
         return  returnMessage;
     }
@@ -91,12 +91,12 @@ public class TaskManager {
         String returnMessage;
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            returnMessage = Formatter.formatTwoTabs + "There are currently no task in the list! (*^▽^*)";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "There are currently no task in the list! (*^▽^*)";
         } else {
-            returnMessage = Formatter.formatTwoTabs + "Here is your list of task(s):";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage += System.lineSeparator() + Formatter.formatFourTabs + index + "." + i;
+                returnMessage += System.lineSeparator() + Formatter.FORMAT_FOUR_TABS + index + "." + i;
                 ++index;
             }
         }
@@ -111,13 +111,13 @@ public class TaskManager {
             int taskIndex = Integer.parseInt(taskIndexString[1]);
             Task task = taskList.get(taskIndex - 1);
             task.setIsDone(true);
-            returnMessage = Formatter.formatTwoTabs + "Completed task " + taskIndex + "!" + System.lineSeparator() + Formatter.formatFourTabs + task;
+            returnMessage = Formatter.FORMAT_TWO_TABS + "Completed task " + taskIndex + "!" + System.lineSeparator() + Formatter.FORMAT_FOUR_TABS + task;
         } catch (NumberFormatException exception) {
-            returnMessage = Formatter.formatTwoTabs + "Invalid input, cannot convert to integer!";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "Invalid input, cannot convert to integer!";
         } catch (ArrayIndexOutOfBoundsException exception) {
-            returnMessage = Formatter.formatTwoTabs + "You did not enter any value!";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "You did not enter any value!";
         } catch (IndexOutOfBoundsException exception) {
-            returnMessage = Formatter.formatTwoTabs + "Ops, you have entered an invalid task number! You have " + taskList.size() + " task(s)!";
+            returnMessage = Formatter.FORMAT_TWO_TABS + "Ops, you have entered an invalid task number! You have " + taskList.size() + " task(s)!";
         }
         return returnMessage;
     }

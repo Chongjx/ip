@@ -1,0 +1,3 @@
+T|false|1|
+E|true|2 | tmr
+D|false|3 | tonight
