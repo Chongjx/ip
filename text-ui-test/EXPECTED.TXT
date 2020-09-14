@@ -8,7 +8,7 @@
     You missed out on the description?! O.o
 ----------------------------------------------------------------------
     Added a todo task [T][✘] watch lecture!
-    Now you have 1 task(s) in the list
+        Now you have 1 task(s) in the list!
 ----------------------------------------------------------------------
     Here is your list of task(s):
         1.[T][✘] watch lecture
@@ -17,10 +17,10 @@
 ----------------------------------------------------------------------
     You missed out key identifier! (/by /at)
 ----------------------------------------------------------------------
-    You missed out key identifier! (/by /at)
+    You did not set a date/time Â¯\_(ãƒ„)_/Â¯
 ----------------------------------------------------------------------
     Added an event [E][✘] test 1 (At: tmr)!
-    Now you have 2 task(s) in the list
+        Now you have 2 task(s) in the list!
 ----------------------------------------------------------------------
     Here is your list of task(s):
         1.[T][✘] watch lecture
@@ -30,10 +30,10 @@
 ----------------------------------------------------------------------
     You missed out key identifier! (/by /at)
 ----------------------------------------------------------------------
-    You missed out key identifier! (/by /at)
+    You did not set a date/time Â¯\_(ãƒ„)_/Â¯
 ----------------------------------------------------------------------
     Added a deadline task [D][✘] test 2 (By: tmr)!
-    Now you have 3 task(s) in the list
+        Now you have 3 task(s) in the list!
 ----------------------------------------------------------------------
     Here is your list of task(s):
         1.[T][✘] watch lecture
