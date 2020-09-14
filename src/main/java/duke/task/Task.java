@@ -37,15 +37,18 @@ public abstract class Task {
         this.taskType = taskType;
     }
 
+    public abstract String getDateTime();
+
     @Override
     public String toString() {
-        String message = taskType + "[";
+        String message = Formatter.encloseWithBrackets(taskType, Formatter.bracketTypes.SQUARE_BRACKET);
+
         if (isDone) {
-            message += Formatter.tick;
+            message += Formatter.encloseWithBrackets(String.valueOf(Formatter.TICK), Formatter.bracketTypes.SQUARE_BRACKET);
         } else {
-            message += Formatter.cross;
+            message += Formatter.encloseWithBrackets(String.valueOf(Formatter.CROSS),Formatter.bracketTypes.SQUARE_BRACKET);
         }
-        message += "] " + description;
+        message += description;
         return message;
     }
 }
