@@ -3,8 +3,8 @@ package duke.util;
 public class Formatter {
     // Formatting
     public final static String FORMAT_DASHES = "----------------------------------------------------------------------";
-    public final static String FORMAT_ONE_TAB = "    ";
-    public final static String FORMAT_TWO_TABS = "        ";
+    public final static String INDENT_ONE_TAB = "    ";
+    public final static String INDENT_TWO_TABS = "        ";
     // Characters for tick and cross
     public final static char TICK = '\u2713';
     public final static char CROSS = '\u2718';

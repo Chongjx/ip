@@ -1,6 +1,5 @@
 package duke.manager;
 
-import duke.Duke;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
@@ -48,16 +47,19 @@ public class IOManager {
     }
 
     // Load the saved task list from the txt file
+    // Return: String, a reply message for the method operation
     // Param: List<task> taskList, the List of task to be loaded into
-    public static void loadTaskList(List<Task> taskList) {
+    public static String loadTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File file = new File(FILE_PATH);
+        String returnMessage = "";
+
         // Create a Scanner using the File as the source
         try {
-            Duke.reply("Looking for existing file...");
+            returnMessage += "Looking for existing file..." + System.lineSeparator();
             Scanner s = new Scanner(file);
 
-            Duke.reply("Found file, loading saved info...");
+            returnMessage += "Found file, loading saved info..." + System.lineSeparator();
             String[] taskInfos;
             String taskType;
             boolean taskIsDone;
@@ -93,11 +95,12 @@ public class IOManager {
                 }
                 taskList.add(task);
             }
-            Duke.reply("Successfully loaded saved info!");
+            returnMessage += "Successfully loaded saved info!";
         } catch (FileNotFoundException exception) {
-            Duke.reply("No saved file found!");
+            returnMessage += "No saved file found!";
         } catch (IllegalStateException exception) {
-            Duke.reply("Unable to load saved info, file may be corrupted!");
+            returnMessage += "Unable to load saved info, file may be corrupted!";
         }
+        return returnMessage;
     }
 }

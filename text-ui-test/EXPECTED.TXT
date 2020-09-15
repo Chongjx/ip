@@ -1,3 +1,6 @@
+Looking for existing file...
+No saved file found!
+----------------------------------------------------------------------
     Hello! I'm Jay. Today is DD/MM/YYYY, DDD. The time now is HH.MM.
     What can I do for you?
 ----------------------------------------------------------------------

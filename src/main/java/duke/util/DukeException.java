@@ -6,7 +6,7 @@ public class DukeException extends Exception {
         EXCEPTION_MISSING_IDENTIFIER("You missed out key identifier! (/by /at)"),
         EXCEPTION_MISSING_DATETIME("You did not set a date/time ¯\\_(ツ)_/¯");
 
-        private String exceptionMessage;
+        private final String exceptionMessage;
 
         ExceptionType(String exceptionMessage) {
             this.exceptionMessage = exceptionMessage;

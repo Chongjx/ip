@@ -48,7 +48,7 @@ public abstract class Task {
         } else {
             message += Formatter.encloseWithBrackets(String.valueOf(Formatter.CROSS),Formatter.bracketTypes.SQUARE_BRACKET);
         }
-        message += description;
+        message += " " + description;
         return message;
     }
 }

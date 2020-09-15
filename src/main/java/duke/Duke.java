@@ -17,16 +17,16 @@ public class Duke {
         COMMAND_INIT,
         COMMAND_ADD,
         COMMAND_LIST,
-        COMMAND_MARKDONE,
+        COMMAND_MARK_DONE,
         COMMAND_DELETE,
         COMMAND_EXIT,
-        COMMAND_UNRECOGNIZE,
+        COMMAND_UNRECOGNIZED,
         COMMAND_MISSING,
     }
 
     // Set the type of user command based on input
     private static Commands userCommand = Commands.COMMAND_INIT;
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
 
     // String for replying
     private static String replyMessage;
@@ -35,25 +35,25 @@ public class Duke {
     private static boolean isExit = false;
 
     // Create a task manager
-    private static TaskManager taskManager = new TaskManager();
+    private static final TaskManager taskManager = new TaskManager();
 
     // Set up to print default messages
     // Param: Commands command, used in switch case to set the proper replyMessage
     private static void printDefaultMessage(Commands command) {
         switch (command) {
         case COMMAND_INIT:
-            replyMessage = Formatter.FORMAT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
+            replyMessage = Formatter.INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
                     DateTimeManager.getDay() + ". The " + "time now is " + DateTimeManager.getTime() + "." +
-                    System.lineSeparator() + Formatter.FORMAT_ONE_TAB + "What can I do for you?";
+                    System.lineSeparator() + Formatter.INDENT_ONE_TAB + "What can I do for you?";
             break;
         case COMMAND_EXIT:
-            replyMessage = Formatter.FORMAT_ONE_TAB + "Bye! Hope to see you again soon!";
+            replyMessage = Formatter.INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
             break;
         case COMMAND_MISSING:
-            replyMessage = Formatter.FORMAT_ONE_TAB + "You did not enter anything, did you?";
+            replyMessage = Formatter.INDENT_ONE_TAB + "You did not enter anything, did you?";
             break;
-        case COMMAND_UNRECOGNIZE:
-            replyMessage = Formatter.FORMAT_ONE_TAB + "Sorry I don't know what that means... >.<";
+        case COMMAND_UNRECOGNIZED:
+            replyMessage = Formatter.INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
             break;
         default:
             replyMessage = "";
@@ -75,7 +75,7 @@ public class Duke {
             userCommand = Commands.COMMAND_LIST;
             break;
         case "DONE":
-            userCommand = Commands.COMMAND_MARKDONE;
+            userCommand = Commands.COMMAND_MARK_DONE;
             break;
         case "BYE":
             userCommand = Commands.COMMAND_EXIT;
@@ -92,7 +92,7 @@ public class Duke {
             userCommand = Commands.COMMAND_MISSING;
             break;
         default:
-            userCommand = Commands.COMMAND_UNRECOGNIZE;
+            userCommand = Commands.COMMAND_UNRECOGNIZED;
             break;
         }
 
@@ -106,7 +106,7 @@ public class Duke {
             replyMessage = taskManager.listTask();
             reply(replyMessage);
             break;
-        case COMMAND_MARKDONE:
+        case COMMAND_MARK_DONE:
             replyMessage = taskManager.markTaskDone(splitMessage);
             reply(replyMessage);
             break;
@@ -118,7 +118,7 @@ public class Duke {
             IOManager.saveTaskList(taskManager.getTaskList());
             isExit = true;
             break;
-        case COMMAND_UNRECOGNIZE:
+        case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
             printDefaultMessage(userCommand);
             break;
@@ -129,7 +129,7 @@ public class Duke {
     }
 
     public static void main(String[] args) {
-        IOManager.loadTaskList(taskManager.getTaskList());
+        reply(IOManager.loadTaskList(taskManager.getTaskList()));
         printDefaultMessage(userCommand);
         do {
             handleUserInput();

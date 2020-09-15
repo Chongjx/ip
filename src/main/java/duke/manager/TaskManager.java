@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TaskManager {
     // User task list
-    private List<Task> taskList;
+    private final List<Task> taskList;
     private String returnMessage;
 
     public TaskManager() {
@@ -70,7 +70,7 @@ public class TaskManager {
         String[] taskInfo;
         try {
             Task newTask = null;
-            returnMessage = Formatter.FORMAT_ONE_TAB + "Added ";
+            returnMessage = Formatter.INDENT_ONE_TAB + "Added ";
 
             // Create new task object based on the command type
             switch (command.toUpperCase()) {
@@ -93,10 +93,10 @@ public class TaskManager {
             // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            returnMessage += newTask + "!" + System.lineSeparator() + Formatter.FORMAT_TWO_TABS + "Now you have " +
+            returnMessage += newTask + "!" + System.lineSeparator() + Formatter.INDENT_TWO_TABS + "Now you have " +
                     taskList.size() + " task(s) in the list!";
         } catch (DukeException e) {
-            returnMessage = Formatter.FORMAT_ONE_TAB + e.getMessage();
+            returnMessage = Formatter.INDENT_ONE_TAB + e.getMessage();
         }
         return  returnMessage;
     }
@@ -106,12 +106,12 @@ public class TaskManager {
     public String listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            returnMessage = Formatter.FORMAT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
+            returnMessage = Formatter.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
         } else {
-            returnMessage = Formatter.FORMAT_ONE_TAB + "Here is your list of task(s):";
+            returnMessage = Formatter.INDENT_ONE_TAB + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage += System.lineSeparator() + Formatter.FORMAT_TWO_TABS + index + "." + i;
+                returnMessage += System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i;
                 ++index;
             }
         }
@@ -129,20 +129,20 @@ public class TaskManager {
             // mark task done or delete task depending on the option
             if (isMarkDone) {
                 task.setIsDone(true);
-                returnMessage = Formatter.FORMAT_ONE_TAB + "Completed task " + taskIndex + "!" + System.lineSeparator() +
-                        Formatter.FORMAT_TWO_TABS + task;
+                returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + taskIndex + "!" + System.lineSeparator() +
+                        Formatter.INDENT_TWO_TABS + task;
             } else {
                 taskList.remove(taskIndex - 1);
-                returnMessage = Formatter.FORMAT_ONE_TAB + "I have removed the task !" + System.lineSeparator() +
-                        Formatter.FORMAT_TWO_TABS + task + System.lineSeparator() + Formatter.FORMAT_ONE_TAB +
+                returnMessage = Formatter.INDENT_ONE_TAB + "I have removed the task !" + System.lineSeparator() +
+                        Formatter.INDENT_TWO_TABS + task + System.lineSeparator() + Formatter.INDENT_ONE_TAB +
                         "Now you have " + taskList.size() + " task(s) in the list!";
             }
         } catch (NumberFormatException exception) {
-            returnMessage = Formatter.FORMAT_ONE_TAB + "Invalid input, cannot convert to integer!";
+            returnMessage = Formatter.INDENT_ONE_TAB + "Invalid input, cannot convert to integer!";
         } catch (ArrayIndexOutOfBoundsException exception) {
-            returnMessage = Formatter.FORMAT_ONE_TAB + "You did not enter any value!";
+            returnMessage = Formatter.INDENT_ONE_TAB + "You did not enter any value!";
         } catch (IndexOutOfBoundsException exception) {
-            returnMessage = Formatter.FORMAT_ONE_TAB + "Ops, you have entered an invalid task number! You have " +
+            returnMessage = Formatter.INDENT_ONE_TAB + "Ops, you have entered an invalid task number! You have " +
                     taskList.size() + " task(s)!";
         }
     }
