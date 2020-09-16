@@ -1,5 +1,6 @@
 package duke.manager;
 
+import duke.Duke;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
@@ -27,7 +28,7 @@ public class TaskManager {
     // the task and index 1 as the date and time info for Deadline and Event
     // Param: String[] message, the whole string of the original message, to be processed for Deadline and Event tasks
     // Param: String identifier, used to split the original message to obtain the date time info
-    // Throws: DukeException, throws all possible exception that may occur, missing info
+    // Throws: DukeException, throws all possible exception that may occur, such as missing info
     public String[] validateTaskInfo(String[] message, String identifier) throws DukeException {
         String[] processedString = new String[2];
         String description;
@@ -74,31 +75,31 @@ public class TaskManager {
 
             // Create new task object based on the command type
             switch (command.toUpperCase()) {
-            case "DEADLINE":
-                taskInfo = validateTaskInfo(message, "/by");
+            case Duke.CSI_DEADLINE:
+                taskInfo = validateTaskInfo(message, Deadline.IDENTIFIER);
                 newTask = new Deadline(taskInfo[0], taskInfo[1]);
-                returnMessage += "a deadline task ";
+                returnMessage = returnMessage.concat("a deadline task ");
                 break;
-            case "EVENT":
-                taskInfo = validateTaskInfo(message, "/at");
+            case Duke.CSI_EVENT:
+                taskInfo = validateTaskInfo(message, Event.IDENTIFIER);
                 newTask = new Event(taskInfo[0], taskInfo[1]);
-                returnMessage += "an event ";
+                returnMessage = returnMessage.concat("an event ");
                 break;
-            case "TODO":
+            case Duke.CSI_TODO:
                 validateTaskInfo(message, "");
                 newTask = new Todo(message[1]);
-                returnMessage += "a todo task ";
+                returnMessage = returnMessage.concat("a todo task ");
                 break;
             }
             // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            returnMessage += newTask + "!" + System.lineSeparator() + Formatter.INDENT_TWO_TABS + "Now you have " +
-                    taskList.size() + " task(s) in the list!";
-        } catch (DukeException e) {
-            returnMessage = Formatter.INDENT_ONE_TAB + e.getMessage();
+            returnMessage = returnMessage.concat(newTask + "!" + System.lineSeparator() + Formatter.INDENT_TWO_TABS +
+                    "Now" + " you have " + taskList.size() + " task(s) in the list!");
+        } catch (DukeException dukeException) {
+            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        return  returnMessage;
+        return returnMessage;
     }
 
     // List all the task in the taskList
@@ -111,47 +112,48 @@ public class TaskManager {
             returnMessage = Formatter.INDENT_ONE_TAB + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage += System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i;
+                returnMessage =
+                        returnMessage.concat(System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i);
                 ++index;
             }
         }
         return returnMessage;
     }
 
-    // Common functionality for markTaskDone and deleteTask
-    // Param: boolean isMarkDone, true for marking task done; false for deleting task
-    // Param: String[] taskIndexString, contains the whole string of the original message. Index 1 is the task index
-    private void markDoneOrDeleteTask(boolean isMarkDone, String[] taskIndexString) {
+    // Validate the task index that the user entered
+    // Return: int, the task index retrieved from the msg
+    // Param: String[] taskIndexString, the whole string of message, to be converted to int
+    // Throws: DukeException, throws all possible exception that may occur, such as missing info
+    private int validateTaskIndex(String[] taskIndexString) throws DukeException {
         // Get the task index
+        int taskIndex;
         try {
-            int taskIndex = Integer.parseInt(taskIndexString[1]);
-            Task task = taskList.get(taskIndex - 1);
-            // mark task done or delete task depending on the option
-            if (isMarkDone) {
-                task.setIsDone(true);
-                returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + taskIndex + "!" + System.lineSeparator() +
-                        Formatter.INDENT_TWO_TABS + task;
-            } else {
-                taskList.remove(taskIndex - 1);
-                returnMessage = Formatter.INDENT_ONE_TAB + "I have removed the task !" + System.lineSeparator() +
-                        Formatter.INDENT_TWO_TABS + task + System.lineSeparator() + Formatter.INDENT_ONE_TAB +
-                        "Now you have " + taskList.size() + " task(s) in the list!";
-            }
+            // try retrieving the task
+            taskIndex = Integer.parseInt(taskIndexString[1]) - 1;
+            Task task = taskList.get(taskIndex);
         } catch (NumberFormatException exception) {
-            returnMessage = Formatter.INDENT_ONE_TAB + "Invalid input, cannot convert to integer!";
+            throw new DukeException(DukeException.ExceptionType.EXCEPTION_INVALID_INPUT);
         } catch (ArrayIndexOutOfBoundsException exception) {
-            returnMessage = Formatter.INDENT_ONE_TAB + "You did not enter any value!";
+            throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
         } catch (IndexOutOfBoundsException exception) {
-            returnMessage = Formatter.INDENT_ONE_TAB + "Ops, you have entered an invalid task number! You have " +
-                    taskList.size() + " task(s)!";
+            throw new DukeException(DukeException.ExceptionType.EXCEPTION_INDEX_OUT_OF_BOUNDS);
         }
+        return taskIndex;
     }
 
     // Mark tasks that are done
     // Return: String, a reply message for the method operation
     // Param: String[] taskIndexString, the original message, to be passed into markDoneOrDelete to process
     public String markTaskDone(String[] taskIndexString) {
-        markDoneOrDeleteTask(true, taskIndexString);
+        try {
+            int taskIndex = validateTaskIndex(taskIndexString);
+            Task task = taskList.get(taskIndex);
+            task.setIsDone(true);
+            returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + System.lineSeparator() +
+                    Formatter.INDENT_TWO_TABS + task;
+        } catch (DukeException dukeException) {
+            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
+        }
         return returnMessage;
     }
 
@@ -159,7 +161,16 @@ public class TaskManager {
     // Return: String, a reply message for the method operation
     // Param: String[] taskIndexString, the original message, to be passed into markDoneOrDelete to process
     public String deleteTask(String[] taskIndexString) {
-        markDoneOrDeleteTask(false, taskIndexString);
+        try {
+            int taskIndex = validateTaskIndex(taskIndexString);
+            Task task = taskList.get(taskIndex);
+            taskList.remove(taskIndex);
+            returnMessage = Formatter.INDENT_ONE_TAB + "I have removed the task!" + System.lineSeparator() +
+                    Formatter.INDENT_TWO_TABS + task + System.lineSeparator() + Formatter.INDENT_ONE_TAB +
+                    "Now you have " + taskList.size() + " task(s) in the list!";
+        } catch (DukeException dukeException) {
+            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
+        }
         return returnMessage;
     }
 }

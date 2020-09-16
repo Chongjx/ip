@@ -43,21 +43,24 @@ No saved file found!
         2.[E][✘] test 1 (At: tmr)
         3.[D][✘] test 2 (By: tmr)
 ----------------------------------------------------------------------
-    Ops, you have entered an invalid task number! You have 3 task(s)!
+    Ops, you have entered an invalid task number!
 ----------------------------------------------------------------------
     Invalid input, cannot convert to integer!
 ----------------------------------------------------------------------
-    Ops, you have entered an invalid task number! You have 3 task(s)!
+    Ops, you have entered an invalid task number!
 ----------------------------------------------------------------------
-    Ops, you have entered an invalid task number! You have 3 task(s)!
+    Ops, you have entered an invalid task number!
 ----------------------------------------------------------------------
     Completed task 2!
         [E][✓] test 1 (At: tmr)
 ----------------------------------------------------------------------
+    I have removed the task!
+        [E][✓] test 1 (At: tmr)
+    Now you have 2 task(s) in the list!
+----------------------------------------------------------------------
     Here is your list of task(s):
         1.[T][✘] watch lecture
-        2.[E][✓] test 1 (At: tmr)
-        3.[D][✘] test 2 (By: tmr)
+        2.[D][✘] test 2 (By: tmr)
 ----------------------------------------------------------------------
     Bye! Hope to see you again soon!
 ----------------------------------------------------------------------

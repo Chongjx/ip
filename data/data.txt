@@ -1,2 +1,4 @@
-T|true|1|
-D|false|quiz | tmr
+T|false|task 1|
+E|true|event | tmr
+D|false|task 3 | tonight
+E|false|event 4 | weds

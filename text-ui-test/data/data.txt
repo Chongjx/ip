@@ -1,3 +1,2 @@
 T|false|watch lecture|
-E|true|test 1 | tmr
 D|false|test 2 | tmr

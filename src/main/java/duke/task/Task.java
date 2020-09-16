@@ -3,14 +3,18 @@ package duke.task;
 import duke.util.Formatter;
 
 public abstract class Task {
+    protected final static String TASK_TYPE_TODO = "T";
+    protected final static String TASK_TYPE_EVENT = "E";
+    protected final static String TASK_TYPE_DEADLINE = "D";
+
     protected String description;
     protected boolean isDone;
     protected String taskType;
 
-    public Task(String description) {
-        this.description = description;
-        this.isDone = false;
-        this.taskType = "";
+    public Task(String description, String taskType) {
+        setDescription(description);
+        setTaskType(taskType);
+        setIsDone(false);
     }
 
     public String getDescription() {

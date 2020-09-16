@@ -24,6 +24,16 @@ public class Duke {
         COMMAND_MISSING,
     }
 
+    // Command string identifier
+    private static final String CSI_LIST = "LIST";
+    private static final String CSI_DONE = "DONE";
+    private static final String CSI_DELETE = "DELETE";
+    private static final String CSI_BYE = "BYE";
+    private static final String CSI_EMPTY = "";
+    public static final String CSI_TODO = "TODO";
+    public static final String CSI_EVENT = "EVENT";
+    public static final String CSI_DEADLINE = "DEADLINE";
+
     // Set the type of user command based on input
     private static Commands userCommand = Commands.COMMAND_INIT;
     private static final Scanner in = new Scanner(System.in);
@@ -38,8 +48,9 @@ public class Duke {
     private static final TaskManager taskManager = new TaskManager();
 
     // Set up to print default messages
+    // Return: String, the default message based on different command
     // Param: Commands command, used in switch case to set the proper replyMessage
-    private static void printDefaultMessage(Commands command) {
+    private static String printDefaultMessage(Commands command) {
         switch (command) {
         case COMMAND_INIT:
             replyMessage = Formatter.INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
@@ -58,7 +69,12 @@ public class Duke {
         default:
             replyMessage = "";
         }
-        reply(replyMessage);
+        return replyMessage;
+    }
+
+    private static void init() {
+        reply(IOManager.loadTaskList(taskManager.getTaskList()));
+        reply(printDefaultMessage(userCommand));
     }
 
     // Handles user input
@@ -71,24 +87,24 @@ public class Duke {
         String command = splitMessage[0];
 
         switch (command.toUpperCase()) {
-        case "LIST":
+        case CSI_LIST:
             userCommand = Commands.COMMAND_LIST;
             break;
-        case "DONE":
+        case CSI_DONE:
             userCommand = Commands.COMMAND_MARK_DONE;
             break;
-        case "BYE":
+        case CSI_BYE:
             userCommand = Commands.COMMAND_EXIT;
             break;
-        case "TODO":
-        case "EVENT":
-        case "DEADLINE":
+        case CSI_TODO:
+        case CSI_EVENT:
+        case CSI_DEADLINE:
             userCommand = Commands.COMMAND_ADD;
             break;
-        case "DELETE":
+        case CSI_DELETE:
             userCommand = Commands.COMMAND_DELETE;
             break;
-        case "":
+        case CSI_EMPTY:
             userCommand = Commands.COMMAND_MISSING;
             break;
         default:
@@ -100,41 +116,35 @@ public class Duke {
         switch (userCommand) {
         case COMMAND_ADD:
             replyMessage = taskManager.addTask(splitMessage, command);
-            reply(replyMessage);
             break;
         case COMMAND_LIST:
             replyMessage = taskManager.listTask();
-            reply(replyMessage);
             break;
         case COMMAND_MARK_DONE:
             replyMessage = taskManager.markTaskDone(splitMessage);
-            reply(replyMessage);
             break;
         case COMMAND_DELETE:
             replyMessage = taskManager.deleteTask(splitMessage);
-            reply(replyMessage);
             break;
         case COMMAND_EXIT:
             IOManager.saveTaskList(taskManager.getTaskList());
             isExit = true;
-            break;
         case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
-            printDefaultMessage(userCommand);
-            break;
         case COMMAND_INIT:
+            replyMessage = printDefaultMessage(userCommand);
+            break;
         default:
             break;
         }
+        reply(replyMessage);
     }
 
     public static void main(String[] args) {
-        reply(IOManager.loadTaskList(taskManager.getTaskList()));
-        printDefaultMessage(userCommand);
+        init();
         do {
             handleUserInput();
         }
         while (!isExit);
-        printDefaultMessage(userCommand);
     }
 }

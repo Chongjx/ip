@@ -3,24 +3,24 @@ package duke.task;
 import duke.util.Formatter;
 
 public class Deadline extends Task {
-    String by;
+    public static final String IDENTIFIER = "/by";
+    String dateTime;
 
-    public Deadline(String description, String by) {
-        super(description);
-        this.by = by;
-        this.taskType = "D";
+    public Deadline(String description, String dateTime) {
+        super(description, TASK_TYPE_DEADLINE);
+        setDateTime(dateTime);
     }
 
-    public void setDateTime(String by) {
-        this.by = by;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getDateTime() {
-        return by;
+        return dateTime;
     }
 
     @Override
     public String toString() {
-        return super.toString() + Formatter.encloseWithBrackets("By:" + by, Formatter.bracketTypes.ROUND_BRACKET);
+        return super.toString() + Formatter.encloseWithBrackets("By:" + dateTime, Formatter.bracketTypes.ROUND_BRACKET);
     }
 }
