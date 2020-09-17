@@ -10,25 +10,40 @@ import duke.util.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TaskManager to store all the tasks into an ArrayList.
+ * Manage adding, listing, deleting and marking task as done operations.
+ */
 public class TaskManager {
-    // User task list
+    /** User task list */
     private final List<Task> taskList;
+    /** Output message for the operations */
     private String returnMessage;
 
+    /**
+     * Default constructor. Creates a new ArrayList to store the tasks.
+     */
     public TaskManager() {
         taskList = new ArrayList<>();
     }
 
+    /**
+     * Returns the taskList.
+     *
+     * @return taskList.
+     */
     public List<Task> getTaskList() {
         return taskList;
     }
 
-    // Validate the info for adding task, ensures description and required keyword are present
-    // Return: String[], more specifically an array of size 2 with the index 0 as the description of
-    // the task and index 1 as the date and time info for Deadline and Event
-    // Param: String[] message, the whole string of the original message, to be processed for Deadline and Event tasks
-    // Param: String identifier, used to split the original message to obtain the date time info
-    // Throws: DukeException, throws all possible exception that may occur, such as missing info
+    /**
+     * Validates the info for adding task, ensures description and the required keyword are present.
+     *
+     * @param message The string of the original message, to be processed for Event and Deadline tasks.
+     * @param identifier Used to split the original message to obtain the data time info for Event and Deadline tasks.
+     * @return The description and date and time info, in index 0 and index 1 respectively, for Event Deadline task.
+     * @throws DukeException Missing description, identifier or date and time info.
+     */
     public String[] validateTaskInfo(String[] message, String identifier) throws DukeException {
         String[] processedString = new String[2];
         String description;
@@ -62,19 +77,22 @@ public class TaskManager {
         return processedString;
     }
 
-    // Create new task and add to the task list
-    // Return: String, a reply message for the method operation
-    // Param: String[] message, the whole string of the original message, to be passed into validateTaskInfo and
-    // retrieve the specific info
-    // Param: String command, used in switch case to add the proper task
-    public String addTask(String[] message, String command) {
+    /**
+     * Creates new task and add to the task list if the info are valid.
+     *
+     * @param message The whole string of the original message. To validated and retrieve the description of the task
+     *               and date time info for Event and Deadline task.
+     * @param commandTaskType The type of task to be created.
+     * @return An outcome message of this method operation.
+     */
+    public String addTask(String[] message, String commandTaskType) {
         String[] taskInfo;
         try {
             Task newTask = null;
             returnMessage = Formatter.INDENT_ONE_TAB + "Added ";
 
             // Create new task object based on the command type
-            switch (command.toUpperCase()) {
+            switch (commandTaskType.toUpperCase()) {
             case Duke.COMMAND_STRING_DEADLINE:
                 taskInfo = validateTaskInfo(message, Deadline.IDENTIFIER);
                 newTask = new Deadline(taskInfo[0], taskInfo[1]);
@@ -104,6 +122,12 @@ public class TaskManager {
 
     // List all the task in the taskList
     // Return: String, a reply message for the method operation
+
+    /**
+     * Lists all the task(s) in the taskList.
+     *
+     * @return All the task(s) in the taskList.
+     */
     public String listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
@@ -119,15 +143,17 @@ public class TaskManager {
         return returnMessage;
     }
 
-    // Validate the task index that the user entered
-    // Return: int, the task index retrieved from the msg
-    // Param: String[] taskIndexString, the whole string of message, to be converted to int
-    // Throws: DukeException, throws all possible exception that may occur, such as missing info
+    /**
+     * Validate the task index that the user entered.
+     *
+     * @param taskIndexString The whole string of message. To be converted to int.
+     * @return Task index retrieved from the message.
+     * @throws DukeException Index out of bounds, invalid input and array index out of bound.
+     */
     private int validateTaskIndex(String[] taskIndexString) throws DukeException {
-        // Get the task index
         int taskIndex;
+        // try retrieving the task index
         try {
-            // try retrieving the task
             taskIndex = Integer.parseInt(taskIndexString[1]) - 1;
             if (taskIndex < 0 || taskIndex > taskList.size() - 1) {
                 throw new DukeException(DukeException.ExceptionType.EXCEPTION_INDEX_OUT_OF_BOUNDS);
@@ -140,10 +166,14 @@ public class TaskManager {
         return taskIndex;
     }
 
-    // Mark tasks that are done
-    // Return: String, a reply message for the method operation
-    // Param: String[] taskIndexString, the original message, to be passed into markDoneOrDelete to process
+    /**
+     * Mark task done based on the index that the user entered.
+     *
+     * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
+     * @return An outcome message of this method operation.
+     */
     public String markTaskDone(String[] taskIndexString) {
+        // try accessing the taskList and mark the task as done
         try {
             int taskIndex = validateTaskIndex(taskIndexString);
             Task task = taskList.get(taskIndex);
@@ -159,7 +189,14 @@ public class TaskManager {
     // Delete specific task
     // Return: String, a reply message for the method operation
     // Param: String[] taskIndexString, the original message, to be passed into markDoneOrDelete to process
+    /**
+     * Delete task based on the index that the user entered.
+     *
+     * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
+     * @return An outcome message of this method operation.
+     */
     public String deleteTask(String[] taskIndexString) {
+        // try accessing the taskList and delete the task
         try {
             int taskIndex = validateTaskIndex(taskIndexString);
             Task task = taskList.get(taskIndex);

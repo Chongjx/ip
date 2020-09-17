@@ -6,14 +6,23 @@ import duke.manager.TaskManager;
 import duke.util.Formatter;
 import java.util.Scanner;
 
+/**
+ * Duke class to control the main application flow.
+ */
 public class Duke {
-    // Print message with formatting
+    /**
+     * Prints out a message with a standard format.
+     *
+     * @param message Message to be printed out.
+     */
     public static void reply(String message) {
         System.out.println(message + System.lineSeparator() + Formatter.FORMAT_DASHES);
     }
 
-    // types of command
-    private enum Commands {
+    /**
+     * Types of command.
+     */
+    private enum CommandType {
         COMMAND_INIT,
         COMMAND_ADD,
         COMMAND_LIST,
@@ -24,7 +33,9 @@ public class Duke {
         COMMAND_MISSING,
     }
 
-    // Command string identifier (CSI)
+    /**
+     * Static final variables for the list of command string
+     */
     private static final String COMMAND_STRING_LIST = "LIST";
     private static final String COMMAND_STRING_DONE = "DONE";
     private static final String COMMAND_STRING_DELETE = "DELETE";
@@ -34,23 +45,42 @@ public class Duke {
     public static final String COMMAND_STRING_EVENT = "EVENT";
     public static final String COMMAND_STRING_DEADLINE = "DEADLINE";
 
-    // Set the type of user command based on input
-    private static Commands userCommand = Commands.COMMAND_INIT;
+    /**
+     * Scanner to handler user input.
+     */
     private static final Scanner in = new Scanner(System.in);
 
-    // String for replying
+    /**
+     * Holds the type of user command.
+     */
+    private static CommandType userCommand = CommandType.COMMAND_INIT;
+
+    /**
+     * Output message for the operations.
+     */
     private static String replyMessage;
 
-    // Boolean for exit app
+    /**
+     * Boolean to control the flow of the program.
+     */
     private static boolean isExit = false;
 
-    // Create a task manager
+    /**
+     * Task manager for the application.
+     */
     private static final TaskManager taskManager = new TaskManager();
 
     // Set up to print default messages
     // Return: String, the default message based on different command
     // Param: Commands command, used in switch case to set the proper replyMessage
-    private static String printDefaultMessage(Commands command) {
+
+    /**
+     * Returns the default message of respective commands.
+     *
+     * @param command Type of command.
+     * @return Respective command message.
+     */
+    private static String getDefaultMessage(CommandType command) {
         switch (command) {
         case COMMAND_INIT:
             replyMessage = Formatter.INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
@@ -72,12 +102,17 @@ public class Duke {
         return replyMessage;
     }
 
+    /**
+     * Loads the taskList on initialization.
+     */
     private static void init() {
         reply(IOManager.loadTaskList(taskManager.getTaskList()));
-        reply(printDefaultMessage(userCommand));
+        reply(getDefaultMessage(userCommand));
     }
 
-    // Handles user input
+    /**
+     * Handles user input and execute the functions accordingly.
+     */
     private static void handleUserInput() {
         // String object to hold any user input or output message
         String message = in.nextLine();
@@ -88,27 +123,27 @@ public class Duke {
 
         switch (command.toUpperCase()) {
         case COMMAND_STRING_LIST:
-            userCommand = Commands.COMMAND_LIST;
+            userCommand = CommandType.COMMAND_LIST;
             break;
         case COMMAND_STRING_DONE:
-            userCommand = Commands.COMMAND_MARK_DONE;
+            userCommand = CommandType.COMMAND_MARK_DONE;
             break;
         case COMMAND_STRING_BYE:
-            userCommand = Commands.COMMAND_EXIT;
+            userCommand = CommandType.COMMAND_EXIT;
             break;
         case COMMAND_STRING_TODO:
         case COMMAND_STRING_EVENT:
         case COMMAND_STRING_DEADLINE:
-            userCommand = Commands.COMMAND_ADD;
+            userCommand = CommandType.COMMAND_ADD;
             break;
         case COMMAND_STRING_DELETE:
-            userCommand = Commands.COMMAND_DELETE;
+            userCommand = CommandType.COMMAND_DELETE;
             break;
         case COMMAND_STRING_EMPTY:
-            userCommand = Commands.COMMAND_MISSING;
+            userCommand = CommandType.COMMAND_MISSING;
             break;
         default:
-            userCommand = Commands.COMMAND_UNRECOGNIZED;
+            userCommand = CommandType.COMMAND_UNRECOGNIZED;
             break;
         }
 
@@ -134,7 +169,7 @@ public class Duke {
         case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
         case COMMAND_INIT:
-            replyMessage = printDefaultMessage(userCommand);
+            replyMessage = getDefaultMessage(userCommand);
             break;
         default:
             break;
@@ -142,6 +177,11 @@ public class Duke {
         reply(replyMessage);
     }
 
+    /**
+     * Main function of the program.
+     *
+     * @param args User entered arguments.
+     */
     public static void main(String[] args) {
         init();
         do {

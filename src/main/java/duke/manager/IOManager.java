@@ -13,12 +13,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * IOManager to manage saving and loading of data to and fro txt file
+ */
 public class IOManager {
+    /** Static final variables for the file path */
     private static final String FILE_DIR = "data";
     private static final String FILE_PATH = "data/data.txt";
 
-    // Save all the tasks in the task list into a txt file
-    // Param: List<Task> taskList, the List of task to be saved from
+    /**
+     * Saves all the task(s) in the task list into a txt file.
+     * Creates the folder and txt file if they are missing.
+     *
+     * @param taskList A list of Task.
+     */
     public static void saveTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File fileDir;
@@ -31,11 +39,10 @@ public class IOManager {
             fileDir.mkdir();
         }
 
-        // Try to create a file if it does not exist
-        // Write all the task into the file
+        // Try to create a file if it does not exist, prints stack trace if there is exception
         try {
             writer = new FileWriter(FILE_PATH);
-            for (Task task : taskList) {
+            for (Task task : taskList) { // Write all the task into the txt file
                 writer.write(task.getTaskType() + Formatter.FILE_DELIMITER + task.getIsDone() + Formatter.FILE_DELIMITER
                         + task.getDescription() + Formatter.FILE_DELIMITER + task.getDateTime() + System.lineSeparator());
             }
@@ -45,15 +52,18 @@ public class IOManager {
         }
     }
 
-    // Load the saved task list from the txt file
-    // Return: String, a reply message for the method operation
-    // Param: List<task> taskList, the List of task to be loaded into
+    /**
+     * Loads the saved data from the txt file into the task list if it exists.
+     *
+     * @param taskList List of task to be loaded into.
+     * @return An outcome message of this method operation.
+     */
     public static String loadTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File file = new File(FILE_PATH);
         String returnMessage = "";
 
-        // Create a Scanner using the File as the source
+        // Load the saved data
         try {
             returnMessage = returnMessage.concat("Looking for existing file..." + System.lineSeparator());
             Scanner s = new Scanner(file);
@@ -65,6 +75,7 @@ public class IOManager {
             String taskDescription;
             String taskDateTime;
 
+            // Read all the line till the last line in the file
             while (s.hasNext()) {
                 taskInfos = s.nextLine().split("\\|");
 
@@ -74,6 +85,7 @@ public class IOManager {
 
                 Task task;
 
+                // Create the task and add into taskList
                 switch(taskType) {
                 case Todo.TASK_TYPE:
                     task = new Todo(taskDescription);
