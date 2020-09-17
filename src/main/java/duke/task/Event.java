@@ -3,12 +3,13 @@ package duke.task;
 import duke.util.Formatter;
 
 public class Event extends Task {
+    public static final String TASK_TYPE = "E";
     public static final String IDENTIFIER = "/at";
 
     String dateTime;
 
     public Event(String description, String dateTime) {
-        super(description, TASK_TYPE_EVENT);
+        super(description, TASK_TYPE);
         setDateTime(dateTime);
     }
 

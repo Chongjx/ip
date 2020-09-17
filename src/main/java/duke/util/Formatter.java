@@ -2,13 +2,13 @@ package duke.util;
 
 public class Formatter {
     // Formatting
-    public final static String FORMAT_DASHES = "----------------------------------------------------------------------";
-    public final static String INDENT_ONE_TAB = "    ";
-    public final static String INDENT_TWO_TABS = "        ";
+    public static final String FORMAT_DASHES = "----------------------------------------------------------------------";
+    public static final String INDENT_ONE_TAB = "    ";
+    public static final String INDENT_TWO_TABS = "        ";
     // Characters for tick and cross
-    public final static char TICK = '\u2713';
-    public final static char CROSS = '\u2718';
-    public final static char FILE_DELIMITER = '|';
+    public static final char TICK = '\u2713';
+    public static final char CROSS = '\u2718';
+    public static final char FILE_DELIMITER = '|';
 
     public enum bracketTypes {
         ROUND_BRACKET,

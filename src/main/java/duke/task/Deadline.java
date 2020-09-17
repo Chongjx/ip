@@ -3,11 +3,13 @@ package duke.task;
 import duke.util.Formatter;
 
 public class Deadline extends Task {
+    public static final String TASK_TYPE = "D";
     public static final String IDENTIFIER = "/by";
+
     String dateTime;
 
     public Deadline(String description, String dateTime) {
-        super(description, TASK_TYPE_DEADLINE);
+        super(description, TASK_TYPE);
         setDateTime(dateTime);
     }
 

@@ -3,10 +3,6 @@ package duke.task;
 import duke.util.Formatter;
 
 public abstract class Task {
-    protected final static String TASK_TYPE_TODO = "T";
-    protected final static String TASK_TYPE_EVENT = "E";
-    protected final static String TASK_TYPE_DEADLINE = "D";
-
     protected String description;
     protected boolean isDone;
     protected String taskType;

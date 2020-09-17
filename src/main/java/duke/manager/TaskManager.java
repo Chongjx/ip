@@ -35,7 +35,7 @@ public class TaskManager {
         String dateTime;
         try {
             description = message[1];
-            // if the message is empty, throw missing description exception
+            // if the message is empty or blank, throw missing description exception
             if (description.isEmpty() || description.isBlank()) {
                 throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
             } else if (!identifier.isEmpty()) {
@@ -75,17 +75,17 @@ public class TaskManager {
 
             // Create new task object based on the command type
             switch (command.toUpperCase()) {
-            case Duke.CSI_DEADLINE:
+            case Duke.COMMAND_STRING_DEADLINE:
                 taskInfo = validateTaskInfo(message, Deadline.IDENTIFIER);
                 newTask = new Deadline(taskInfo[0], taskInfo[1]);
                 returnMessage = returnMessage.concat("a deadline task ");
                 break;
-            case Duke.CSI_EVENT:
+            case Duke.COMMAND_STRING_EVENT:
                 taskInfo = validateTaskInfo(message, Event.IDENTIFIER);
                 newTask = new Event(taskInfo[0], taskInfo[1]);
                 returnMessage = returnMessage.concat("an event ");
                 break;
-            case Duke.CSI_TODO:
+            case Duke.COMMAND_STRING_TODO:
                 validateTaskInfo(message, "");
                 newTask = new Todo(message[1]);
                 returnMessage = returnMessage.concat("a todo task ");
@@ -95,7 +95,7 @@ public class TaskManager {
             taskList.add(newTask);
             // print out the newly added task
             returnMessage = returnMessage.concat(newTask + "!" + System.lineSeparator() + Formatter.INDENT_TWO_TABS +
-                    "Now" + " you have " + taskList.size() + " task(s) in the list!");
+                    "Now you have " + taskList.size() + " task(s) in the list!");
         } catch (DukeException dukeException) {
             returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
         }
@@ -112,8 +112,7 @@ public class TaskManager {
             returnMessage = Formatter.INDENT_ONE_TAB + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage =
-                        returnMessage.concat(System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i);
+                returnMessage = returnMessage.concat(System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i);
                 ++index;
             }
         }
@@ -130,13 +129,13 @@ public class TaskManager {
         try {
             // try retrieving the task
             taskIndex = Integer.parseInt(taskIndexString[1]) - 1;
-            Task task = taskList.get(taskIndex);
+            if (taskIndex < 0 || taskIndex > taskList.size() - 1) {
+                throw new DukeException(DukeException.ExceptionType.EXCEPTION_INDEX_OUT_OF_BOUNDS);
+            }
         } catch (NumberFormatException exception) {
             throw new DukeException(DukeException.ExceptionType.EXCEPTION_INVALID_INPUT);
         } catch (ArrayIndexOutOfBoundsException exception) {
             throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
-        } catch (IndexOutOfBoundsException exception) {
-            throw new DukeException(DukeException.ExceptionType.EXCEPTION_INDEX_OUT_OF_BOUNDS);
         }
         return taskIndex;
     }
@@ -149,8 +148,8 @@ public class TaskManager {
             int taskIndex = validateTaskIndex(taskIndexString);
             Task task = taskList.get(taskIndex);
             task.setIsDone(true);
-            returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + System.lineSeparator() +
-                    Formatter.INDENT_TWO_TABS + task;
+            returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + System.lineSeparator()
+                    + Formatter.INDENT_TWO_TABS + task;
         } catch (DukeException dukeException) {
             returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
         }

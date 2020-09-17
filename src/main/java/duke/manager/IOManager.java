@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class IOManager {
-
     private static final String FILE_DIR = "data";
     private static final String FILE_PATH = "data/data.txt";
 
@@ -56,10 +55,10 @@ public class IOManager {
 
         // Create a Scanner using the File as the source
         try {
-            returnMessage += "Looking for existing file..." + System.lineSeparator();
+            returnMessage = returnMessage.concat("Looking for existing file..." + System.lineSeparator());
             Scanner s = new Scanner(file);
 
-            returnMessage += "Found file, loading saved info..." + System.lineSeparator();
+            returnMessage = returnMessage.concat("Found file, loading saved info..." + System.lineSeparator());
             String[] taskInfos;
             String taskType;
             boolean taskIsDone;
@@ -76,16 +75,16 @@ public class IOManager {
                 Task task;
 
                 switch(taskType) {
-                case "T":
+                case Todo.TASK_TYPE:
                     task = new Todo(taskDescription);
                     task.setIsDone(taskIsDone);
                     break;
-                case "E":
+                case Event.TASK_TYPE:
                     taskDateTime = taskInfos[3];
                     task = new Event(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
                     break;
-                case "D":
+                case Deadline.TASK_TYPE:
                     taskDateTime = taskInfos[3];
                     task = new Deadline(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
@@ -95,11 +94,11 @@ public class IOManager {
                 }
                 taskList.add(task);
             }
-            returnMessage += "Successfully loaded saved info!";
+            returnMessage = returnMessage.concat("Successfully loaded saved info!");
         } catch (FileNotFoundException exception) {
-            returnMessage += "No saved file found!";
+            returnMessage = returnMessage.concat("No saved file found!");
         } catch (IllegalStateException exception) {
-            returnMessage += "Unable to load saved info, file may be corrupted!";
+            returnMessage = returnMessage.concat("Unable to load saved info, file may be corrupted!");
         }
         return returnMessage;
     }

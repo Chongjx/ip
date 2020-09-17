@@ -24,15 +24,15 @@ public class Duke {
         COMMAND_MISSING,
     }
 
-    // Command string identifier
-    private static final String CSI_LIST = "LIST";
-    private static final String CSI_DONE = "DONE";
-    private static final String CSI_DELETE = "DELETE";
-    private static final String CSI_BYE = "BYE";
-    private static final String CSI_EMPTY = "";
-    public static final String CSI_TODO = "TODO";
-    public static final String CSI_EVENT = "EVENT";
-    public static final String CSI_DEADLINE = "DEADLINE";
+    // Command string identifier (CSI)
+    private static final String COMMAND_STRING_LIST = "LIST";
+    private static final String COMMAND_STRING_DONE = "DONE";
+    private static final String COMMAND_STRING_DELETE = "DELETE";
+    private static final String COMMAND_STRING_BYE = "BYE";
+    private static final String COMMAND_STRING_EMPTY = "";
+    public static final String COMMAND_STRING_TODO = "TODO";
+    public static final String COMMAND_STRING_EVENT = "EVENT";
+    public static final String COMMAND_STRING_DEADLINE = "DEADLINE";
 
     // Set the type of user command based on input
     private static Commands userCommand = Commands.COMMAND_INIT;
@@ -54,7 +54,7 @@ public class Duke {
         switch (command) {
         case COMMAND_INIT:
             replyMessage = Formatter.INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
-                    DateTimeManager.getDay() + ". The " + "time now is " + DateTimeManager.getTime() + "." +
+                    DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "." +
                     System.lineSeparator() + Formatter.INDENT_ONE_TAB + "What can I do for you?";
             break;
         case COMMAND_EXIT:
@@ -87,24 +87,24 @@ public class Duke {
         String command = splitMessage[0];
 
         switch (command.toUpperCase()) {
-        case CSI_LIST:
+        case COMMAND_STRING_LIST:
             userCommand = Commands.COMMAND_LIST;
             break;
-        case CSI_DONE:
+        case COMMAND_STRING_DONE:
             userCommand = Commands.COMMAND_MARK_DONE;
             break;
-        case CSI_BYE:
+        case COMMAND_STRING_BYE:
             userCommand = Commands.COMMAND_EXIT;
             break;
-        case CSI_TODO:
-        case CSI_EVENT:
-        case CSI_DEADLINE:
+        case COMMAND_STRING_TODO:
+        case COMMAND_STRING_EVENT:
+        case COMMAND_STRING_DEADLINE:
             userCommand = Commands.COMMAND_ADD;
             break;
-        case CSI_DELETE:
+        case COMMAND_STRING_DELETE:
             userCommand = Commands.COMMAND_DELETE;
             break;
-        case CSI_EMPTY:
+        case COMMAND_STRING_EMPTY:
             userCommand = Commands.COMMAND_MISSING;
             break;
         default:
@@ -116,18 +116,20 @@ public class Duke {
         switch (userCommand) {
         case COMMAND_ADD:
             replyMessage = taskManager.addTask(splitMessage, command);
+            IOManager.saveTaskList(taskManager.getTaskList());
             break;
         case COMMAND_LIST:
             replyMessage = taskManager.listTask();
             break;
         case COMMAND_MARK_DONE:
             replyMessage = taskManager.markTaskDone(splitMessage);
+            IOManager.saveTaskList(taskManager.getTaskList());
             break;
         case COMMAND_DELETE:
             replyMessage = taskManager.deleteTask(splitMessage);
+            IOManager.saveTaskList(taskManager.getTaskList());
             break;
         case COMMAND_EXIT:
-            IOManager.saveTaskList(taskManager.getTaskList());
             isExit = true;
         case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
