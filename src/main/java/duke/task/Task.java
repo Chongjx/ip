@@ -1,22 +1,18 @@
 package duke.task;
 
-import duke.util.Formatter;
+import duke.managers.UIManager;
 
 /**
  * Abstract Task class that contains the basic info of a task.
  */
 public abstract class Task {
-    /** Description, is done status and the task type info */
     protected String description;
     protected boolean isDone;
     protected String taskType;
 
-    /**
-     * Constructor of a Task.
-     *
-     * @param description Task description.
-     * @param taskType Task type. Todo, Event or Deadline.
-     */
+    public static final char TICK = '\u2713';
+    public static final char CROSS = '\u2718';
+
     public Task(String description, String taskType) {
         setDescription(description);
         setTaskType(taskType);
@@ -91,14 +87,14 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        String message = Formatter.encloseWithBrackets(taskType, Formatter.bracketType.SQUARE_BRACKET);
+        String message = UIManager.encloseWithBrackets(taskType, UIManager.bracketType.SQUARE_BRACKET);
 
         if (isDone) {
-            message = message.concat(Formatter.encloseWithBrackets(String.valueOf(Formatter.TICK),
-                    Formatter.bracketType.SQUARE_BRACKET));
+            message = message.concat(UIManager.encloseWithBrackets(String.valueOf(TICK),
+                    UIManager.bracketType.SQUARE_BRACKET));
         } else {
-            message = message.concat(Formatter.encloseWithBrackets(String.valueOf(Formatter.CROSS),
-                    Formatter.bracketType.SQUARE_BRACKET));
+            message = message.concat(UIManager.encloseWithBrackets(String.valueOf(CROSS),
+                    UIManager.bracketType.SQUARE_BRACKET));
         }
         message = message.concat(" " + description);
         return message;

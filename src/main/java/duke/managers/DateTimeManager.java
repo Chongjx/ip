@@ -1,10 +1,10 @@
-package duke.manager;
+package duke.managers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * DateTimeManager to retrieve current date and time info.
+ * Returns the current date and time info.
  */
 public class DateTimeManager {
     /** An instance of current DateTime */

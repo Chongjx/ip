@@ -1,17 +1,11 @@
 package duke.task;
 
 /**
- * Todo class which inherits from Task class.
+ * Represents a Todo task.
  */
 public class Todo extends Task {
-    /** Static final variable for Todo task type */
     public static final String TASK_TYPE = "T";
 
-    /**
-     * Constructor of a Todo.
-     *
-     * @param description Todo description.
-     */
     public Todo(String description) {
         super(description, TASK_TYPE);
     }

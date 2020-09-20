@@ -1,10 +1,9 @@
-package duke.manager;
+package duke.managers;
 
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
-import duke.util.Formatter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,12 +13,17 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * IOManager to manage saving and loading of data to and fro txt file
+ * Handles the saving and loading of task list data.
  */
 public class IOManager {
-    /** Static final variables for the file path */
+    /** Default file path if the user doesn't provide the file name. */
     private static final String FILE_DIR = "data";
     private static final String FILE_PATH = "data/data.txt";
+
+    public static final char FILE_STRING_DELIMITER = '|';
+
+    public IOManager() {
+    }
 
     /**
      * Saves all the task(s) in the task list into a txt file.
@@ -27,7 +31,7 @@ public class IOManager {
      *
      * @param taskList A list of Task.
      */
-    public static void saveTaskList(List<Task> taskList) {
+    public void saveTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File fileDir;
         FileWriter writer;
@@ -43,8 +47,8 @@ public class IOManager {
         try {
             writer = new FileWriter(FILE_PATH);
             for (Task task : taskList) { // Write all the task into the txt file
-                writer.write(task.getTaskType() + Formatter.FILE_DELIMITER + task.getIsDone() + Formatter.FILE_DELIMITER
-                        + task.getDescription() + Formatter.FILE_DELIMITER + task.getDateTime() + System.lineSeparator());
+                writer.write(task.getTaskType() + FILE_STRING_DELIMITER + task.getIsDone() + FILE_STRING_DELIMITER
+                        + task.getDescription() + FILE_STRING_DELIMITER + task.getDateTime() + UIManager.LS);
             }
             writer.close();
         } catch (IOException ioException) {
@@ -58,17 +62,18 @@ public class IOManager {
      * @param taskList List of task to be loaded into.
      * @return An outcome message of this method operation.
      */
-    public static String loadTaskList(List<Task> taskList) {
+    public String loadTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File file = new File(FILE_PATH);
-        String returnMessage = "";
+        String returnMessage = UIManager.INDENT_ONE_TAB;
 
         // Load the saved data
         try {
-            returnMessage = returnMessage.concat("Looking for existing file..." + System.lineSeparator());
+            returnMessage = returnMessage.concat("Looking for existing file..." + UIManager.LS);
             Scanner s = new Scanner(file);
 
-            returnMessage = returnMessage.concat("Found file, loading saved info..." + System.lineSeparator());
+            returnMessage = returnMessage.concat(UIManager.INDENT_ONE_TAB + "Found file, loading saved info..." +
+                    UIManager.LS);
             String[] taskInfos;
             String taskType;
             boolean taskIsDone;
@@ -102,15 +107,15 @@ public class IOManager {
                     task.setIsDone(taskIsDone);
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected value: " + taskType);
+                    throw new IllegalStateException(UIManager.INDENT_ONE_TAB + "Unexpected value: " + taskType);
                 }
                 taskList.add(task);
             }
-            returnMessage = returnMessage.concat("Successfully loaded saved info!");
+            returnMessage = returnMessage.concat(UIManager.INDENT_ONE_TAB + "Successfully loaded saved info!");
         } catch (FileNotFoundException exception) {
-            returnMessage = returnMessage.concat("No saved file found!");
+            returnMessage = returnMessage.concat(UIManager.INDENT_ONE_TAB + "No saved file found!");
         } catch (IllegalStateException exception) {
-            returnMessage = returnMessage.concat("Unable to load saved info, file may be corrupted!");
+            returnMessage = returnMessage.concat(UIManager.INDENT_ONE_TAB + "Unable to load saved info, file may be corrupted!");
         }
         return returnMessage;
     }

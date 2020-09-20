@@ -1,24 +1,17 @@
 package duke.task;
 
-import duke.util.Formatter;
+import duke.managers.UIManager;
 
 /**
- * Deadline class which inherits from Task class.
+ * Represents a Deadline task.
  */
 public class Deadline extends Task {
-    /** Static final variables for Deadline task type and identifier */
     public static final String TASK_TYPE = "D";
     public static final String IDENTIFIER = "/by";
 
     /** The date and time info that it is due by */
     String dateTime;
 
-    /**
-     * Constructor of a Deadline.
-     *
-     * @param description Deadline description.
-     * @param dateTime Deadline date and time info.
-     */
     public Deadline(String description, String dateTime) {
         super(description, TASK_TYPE);
         setDateTime(dateTime);
@@ -50,6 +43,6 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return super.toString() + Formatter.encloseWithBrackets("By:" + dateTime, Formatter.bracketType.ROUND_BRACKET);
+        return super.toString() + UIManager.encloseWithBrackets("By:" + dateTime, UIManager.bracketType.ROUND_BRACKET);
     }
 }

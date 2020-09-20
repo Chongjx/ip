@@ -1,4 +1,4 @@
-package duke.manager;
+package duke.managers;
 
 import duke.Duke;
 import duke.task.Deadline;
@@ -6,7 +6,7 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 import duke.util.DukeException;
-import duke.util.Formatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class TaskManager {
     private String returnMessage;
 
     /**
-     * Default constructor. Creates a new ArrayList to store the tasks.
+     * Creates a new ArrayList to store the tasks.
      */
     public TaskManager() {
         taskList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class TaskManager {
         String[] taskInfo;
         try {
             Task newTask = null;
-            returnMessage = Formatter.INDENT_ONE_TAB + "Added ";
+            returnMessage = UIManager.INDENT_ONE_TAB + "Added ";
 
             // Create new task object based on the command type
             switch (commandTaskType.toUpperCase()) {
@@ -112,10 +112,10 @@ public class TaskManager {
             // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            returnMessage = returnMessage.concat(newTask + "!" + System.lineSeparator() + Formatter.INDENT_TWO_TABS +
+            returnMessage = returnMessage.concat(newTask + "!" + UIManager.LS + UIManager.INDENT_TWO_TABS +
                     "Now you have " + taskList.size() + " task(s) in the list!");
         } catch (DukeException dukeException) {
-            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
+            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
         return returnMessage;
     }
@@ -131,12 +131,12 @@ public class TaskManager {
     public String listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            returnMessage = Formatter.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
+            returnMessage = UIManager.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
         } else {
-            returnMessage = Formatter.INDENT_ONE_TAB + "Here is your list of task(s):";
+            returnMessage = UIManager.INDENT_ONE_TAB + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage = returnMessage.concat(System.lineSeparator() + Formatter.INDENT_TWO_TABS + index + "." + i);
+                returnMessage = returnMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
                 ++index;
             }
         }
@@ -178,10 +178,10 @@ public class TaskManager {
             int taskIndex = validateTaskIndex(taskIndexString);
             Task task = taskList.get(taskIndex);
             task.setIsDone(true);
-            returnMessage = Formatter.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + System.lineSeparator()
-                    + Formatter.INDENT_TWO_TABS + task;
+            returnMessage = UIManager.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + UIManager.LS +
+                    UIManager.INDENT_TWO_TABS + task;
         } catch (DukeException dukeException) {
-            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
+            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
         return returnMessage;
     }
@@ -201,11 +201,11 @@ public class TaskManager {
             int taskIndex = validateTaskIndex(taskIndexString);
             Task task = taskList.get(taskIndex);
             taskList.remove(taskIndex);
-            returnMessage = Formatter.INDENT_ONE_TAB + "I have removed the task!" + System.lineSeparator() +
-                    Formatter.INDENT_TWO_TABS + task + System.lineSeparator() + Formatter.INDENT_ONE_TAB +
+            returnMessage = UIManager.INDENT_ONE_TAB + "I have removed the task!" + UIManager.LS +
+                    UIManager.INDENT_TWO_TABS + task + UIManager.LS + UIManager.INDENT_ONE_TAB +
                     "Now you have " + taskList.size() + " task(s) in the list!";
         } catch (DukeException dukeException) {
-            returnMessage = Formatter.INDENT_ONE_TAB + dukeException.getMessage();
+            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
         return returnMessage;
     }
