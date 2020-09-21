@@ -8,8 +8,7 @@ import java.util.Scanner;
  * Text UI of the application
  */
 public class UIManager {
-
-     /** Offset for displaying 1st level of message. */
+    /** Offset for displaying 1st level of message. */
     public static final String INDENT_ONE_TAB = "    ";
     /** Offset for displaying 2nd level of message. */
     public static final String INDENT_TWO_TABS = "        ";
@@ -19,6 +18,8 @@ public class UIManager {
 
     private final Scanner in;
     private final PrintStream out;
+
+    private String[] splitMessages;
 
     public UIManager() {
         this(System.in, System.out);
@@ -30,12 +31,52 @@ public class UIManager {
     }
 
     /**
+     * Returns the command based on user input.
      *
-     * @return
+     * @return user command.
      */
-    public String getUserInput() {
+    public TaskManager.CommandType getUserInput() {
         String fullInputMessage = in.nextLine();
-        return fullInputMessage;
+        splitMessages = fullInputMessage.split(" ", 2);
+        String command = splitMessages[0];
+
+        TaskManager.CommandType userCommand;
+
+        switch (command.toUpperCase()) {
+        case TaskManager.COMMAND_STRING_LIST:
+            userCommand = TaskManager.CommandType.COMMAND_LIST;
+            break;
+        case TaskManager.COMMAND_STRING_DONE:
+            userCommand = TaskManager.CommandType.COMMAND_MARK_DONE;
+            break;
+        case TaskManager.COMMAND_STRING_BYE:
+            userCommand = TaskManager.CommandType.COMMAND_EXIT;
+            break;
+        case TaskManager.COMMAND_STRING_TODO:
+        case TaskManager.COMMAND_STRING_EVENT:
+        case TaskManager.COMMAND_STRING_DEADLINE:
+            userCommand = TaskManager.CommandType.COMMAND_ADD;
+            break;
+        case TaskManager.COMMAND_STRING_DELETE:
+            userCommand = TaskManager.CommandType.COMMAND_DELETE;
+            break;
+        case TaskManager.COMMAND_STRING_EMPTY:
+            userCommand = TaskManager.CommandType.COMMAND_MISSING;
+            break;
+        default:
+            userCommand = TaskManager.CommandType.COMMAND_UNRECOGNIZED;
+            break;
+        }
+        return userCommand;
+    }
+
+    /**
+     * Returns the split messages
+     *
+     * @return split messages
+     */
+    public String[] getSplitMessages () {
+        return splitMessages;
     }
 
     /**
@@ -54,6 +95,34 @@ public class UIManager {
         ROUND_BRACKET,
         SQUARE_BRACKET,
         CURLY_BRACKET,
+    }
+
+    /**
+    * Returns the default message of respective commands.
+    *
+    * @param command Type of command.
+     */
+    public void printDefaultMessage(TaskManager.CommandType command) {
+        String replyMessage;
+        switch (command) {
+        case COMMAND_INIT:
+            replyMessage = INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
+                    DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "." + LS +
+                    INDENT_ONE_TAB + "What can I do for you?";
+            break;
+        case COMMAND_EXIT:
+            replyMessage = INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
+            break;
+        case COMMAND_MISSING:
+            replyMessage = INDENT_ONE_TAB + "You did not enter anything, did you?";
+            break;
+        case COMMAND_UNRECOGNIZED:
+            replyMessage = INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
+            break;
+        default:
+            replyMessage = "";
+        }
+        prints(replyMessage);
     }
 
     /**

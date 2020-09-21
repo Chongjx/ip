@@ -1,6 +1,5 @@
 package duke.managers;
 
-import duke.Duke;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
@@ -15,8 +14,35 @@ import java.util.List;
  * Manage adding, listing, deleting and marking task as done operations.
  */
 public class TaskManager {
+    /**
+     * Types of command.
+     */
+    public enum CommandType {
+        COMMAND_ADD,
+        COMMAND_LIST,
+        COMMAND_MARK_DONE,
+        COMMAND_DELETE,
+        COMMAND_EXIT,
+        COMMAND_UNRECOGNIZED,
+        COMMAND_MISSING,
+        COMMAND_INIT
+    }
+
+    /**
+     * Static final variables for the list of command string
+     */
+    public static final String COMMAND_STRING_LIST = "LIST";
+    public static final String COMMAND_STRING_DONE = "DONE";
+    public static final String COMMAND_STRING_DELETE = "DELETE";
+    public static final String COMMAND_STRING_EMPTY = "";
+    public static final String COMMAND_STRING_TODO = "TODO";
+    public static final String COMMAND_STRING_EVENT = "EVENT";
+    public static final String COMMAND_STRING_DEADLINE = "DEADLINE";
+    public static final String COMMAND_STRING_BYE = "BYE";
+
     /** User task list */
     private final List<Task> taskList;
+
     /** Output message for the operations */
     private String returnMessage;
 
@@ -82,28 +108,28 @@ public class TaskManager {
      *
      * @param message The whole string of the original message. To validated and retrieve the description of the task
      *               and date time info for Event and Deadline task.
-     * @param commandTaskType The type of task to be created.
+     * @param addTaskType The type of task to be created.
      * @return An outcome message of this method operation.
      */
-    public String addTask(String[] message, String commandTaskType) {
+    public String addTask(String[] message, String addTaskType) {
         String[] taskInfo;
         try {
             Task newTask = null;
             returnMessage = UIManager.INDENT_ONE_TAB + "Added ";
 
             // Create new task object based on the command type
-            switch (commandTaskType.toUpperCase()) {
-            case Duke.COMMAND_STRING_DEADLINE:
+            switch (addTaskType.toUpperCase()) {
+            case COMMAND_STRING_DEADLINE:
                 taskInfo = validateTaskInfo(message, Deadline.IDENTIFIER);
                 newTask = new Deadline(taskInfo[0], taskInfo[1]);
                 returnMessage = returnMessage.concat("a deadline task ");
                 break;
-            case Duke.COMMAND_STRING_EVENT:
+            case COMMAND_STRING_EVENT:
                 taskInfo = validateTaskInfo(message, Event.IDENTIFIER);
                 newTask = new Event(taskInfo[0], taskInfo[1]);
                 returnMessage = returnMessage.concat("an event ");
                 break;
-            case Duke.COMMAND_STRING_TODO:
+            case COMMAND_STRING_TODO:
                 validateTaskInfo(message, "");
                 newTask = new Todo(message[1]);
                 returnMessage = returnMessage.concat("a todo task ");
