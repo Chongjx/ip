@@ -54,6 +54,12 @@
     Completed task 2!
         [E][✓] test 1 (At: tmr)
 ===========================================================================
+    You did not enter any value!
+===========================================================================
+    Ops, you have entered an invalid task number!
+===========================================================================
+    Invalid input, cannot convert to integer!
+===========================================================================
     I have removed the task!
         [E][✓] test 1 (At: tmr)
     Now you have 2 task(s) in the list!

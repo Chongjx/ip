@@ -3,7 +3,7 @@ package duke.task;
 import duke.managers.UIManager;
 
 /**
- * Abstract Task class that contains the basic info of a task.
+ * Contains the basic info of a task.
  */
 public abstract class Task {
     protected String description;

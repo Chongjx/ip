@@ -18,6 +18,9 @@ done hi
 done -1
 done 5
 done 2
+delete
+delete 0
+delete none
 delete 2
 list
 bye

@@ -1,7 +1,7 @@
 package duke.util;
 
 /**
- * DukeException class which inherits from Exception. Creates possible list of exceptions.
+ * Signals the different type of possible exceptions.
  */
 public class DukeException extends Exception {
     /**
@@ -41,7 +41,7 @@ public class DukeException extends Exception {
     }
 
     /**
-     * Constuctor of a DukeException.
+     * Constructor of a DukeException.
      *
      * @param exception Type of exception.
      */

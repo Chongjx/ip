@@ -5,20 +5,22 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 import duke.util.DukeException;
+import duke.util.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TaskManager to store all the tasks into an ArrayList.
- * Manage adding, listing, deleting and marking task as done operations.
+ * Stores all the tasks into an ArrayList and manages the adding, listing, deleting and marking task as done operations.
  */
 public class TaskManager {
     /**
      * Types of command.
      */
     public enum CommandType {
-        COMMAND_ADD,
+        COMMAND_ADD_TODO,
+        COMMAND_ADD_EVENT,
+        COMMAND_ADD_DEADLINE,
         COMMAND_LIST,
         COMMAND_MARK_DONE,
         COMMAND_DELETE,
@@ -28,28 +30,20 @@ public class TaskManager {
         COMMAND_INIT
     }
 
-    /**
-     * Static final variables for the list of command string
-     */
-    public static final String COMMAND_STRING_LIST = "LIST";
-    public static final String COMMAND_STRING_DONE = "DONE";
-    public static final String COMMAND_STRING_DELETE = "DELETE";
-    public static final String COMMAND_STRING_EMPTY = "";
-    public static final String COMMAND_STRING_TODO = "TODO";
-    public static final String COMMAND_STRING_EVENT = "EVENT";
-    public static final String COMMAND_STRING_DEADLINE = "DEADLINE";
-    public static final String COMMAND_STRING_BYE = "BYE";
-
     /** User task list */
     private final List<Task> taskList;
 
     /** Output message for the operations */
-    private String returnMessage;
+    private String taskOutputMessage;
+
+    /** Handler for an UIManager */
+    private final UIManager uiManager;
 
     /**
-     * Creates a new ArrayList to store the tasks.
+     * Creates a new ArrayList to store the tasks. Holds a uiManager handler.
      */
-    public TaskManager() {
+    public TaskManager(UIManager uiManager) {
+        this.uiManager = uiManager;
         taskList = new ArrayList<>();
     }
 
@@ -63,44 +57,36 @@ public class TaskManager {
     }
 
     /**
-     * Validates the info for adding task, ensures description and the required keyword are present.
+     * Executes the function for the respective commands.
      *
-     * @param message The string of the original message, to be processed for Event and Deadline tasks.
-     * @param identifier Used to split the original message to obtain the data time info for Event and Deadline tasks.
-     * @return The description and date and time info, in index 0 and index 1 respectively, for Event Deadline task.
-     * @throws DukeException Missing description, identifier or date and time info.
+     * @param commandType Type of command to execute
+     * @param taskInfo Task information for the command.
      */
-    public String[] validateTaskInfo(String[] message, String identifier) throws DukeException {
-        String[] processedString = new String[2];
-        String description;
-        String dateTime;
-        try {
-            description = message[1];
-            // if the message is empty or blank, throw missing description exception
-            if (description.isEmpty() || description.isBlank()) {
-                throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
-            } else if (!identifier.isEmpty()) {
-                // split message by identifier, if specified. Throw missing identifier if the string does not contain
-                // the identifier
-                if (!description.contains(identifier)) {
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_IDENTIFIER);
-                }
-                // split message based on identifier
-                processedString = message[1].split(identifier, 2);
-                description = processedString[0];
-                dateTime = processedString[1];
-                // if missing description or datetime, throw respective exception
-                if (description.isEmpty()) {
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
-                } else if (dateTime.isEmpty() || dateTime.isBlank()) {
-                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DATETIME);
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException exception) {
-            // extra handling in the the event that the message is empty and cannot be split
-            throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
+    public void handleTask(CommandType commandType, String[] taskInfo) {
+        switch (commandType) {
+        case COMMAND_ADD_TODO:
+        case COMMAND_ADD_EVENT:
+        case COMMAND_ADD_DEADLINE:
+            addTask(taskInfo, commandType);
+            break;
+        case COMMAND_LIST:
+            listTask();
+            break;
+        case COMMAND_MARK_DONE:
+            markTaskDone(taskInfo);
+            break;
+        case COMMAND_DELETE:
+            deleteTask(taskInfo);
+            break;
+        case COMMAND_UNRECOGNIZED:
+        case COMMAND_MISSING:
+        case COMMAND_INIT:
+        case COMMAND_EXIT:
+            uiManager.printsDefaultMessage(commandType);
+            break;
+        default:
+            break;
         }
-        return processedString;
     }
 
     /**
@@ -109,130 +95,93 @@ public class TaskManager {
      * @param message The whole string of the original message. To validated and retrieve the description of the task
      *               and date time info for Event and Deadline task.
      * @param addTaskType The type of task to be created.
-     * @return An outcome message of this method operation.
      */
-    public String addTask(String[] message, String addTaskType) {
+    private void addTask(String[] message, CommandType addTaskType) {
         String[] taskInfo;
         try {
             Task newTask = null;
-            returnMessage = UIManager.INDENT_ONE_TAB + "Added ";
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "Added ";
 
             // Create new task object based on the command type
-            switch (addTaskType.toUpperCase()) {
-            case COMMAND_STRING_DEADLINE:
-                taskInfo = validateTaskInfo(message, Deadline.IDENTIFIER);
-                newTask = new Deadline(taskInfo[0], taskInfo[1]);
-                returnMessage = returnMessage.concat("a deadline task ");
-                break;
-            case COMMAND_STRING_EVENT:
-                taskInfo = validateTaskInfo(message, Event.IDENTIFIER);
-                newTask = new Event(taskInfo[0], taskInfo[1]);
-                returnMessage = returnMessage.concat("an event ");
-                break;
-            case COMMAND_STRING_TODO:
-                validateTaskInfo(message, "");
+            switch (addTaskType) {
+            case COMMAND_ADD_TODO:
+                new Parser().parseTaskInfo(message, "");
                 newTask = new Todo(message[1]);
-                returnMessage = returnMessage.concat("a todo task ");
+                taskOutputMessage = taskOutputMessage.concat("a todo task ");
+                break;
+            case COMMAND_ADD_EVENT:
+                taskInfo = new Parser().parseTaskInfo(message, Event.IDENTIFIER);
+                newTask = new Event(taskInfo[0], taskInfo[1]);
+                taskOutputMessage = taskOutputMessage.concat("an event ");
+                break;
+            case COMMAND_ADD_DEADLINE:
+                taskInfo = new Parser().parseTaskInfo(message, Deadline.IDENTIFIER);
+                newTask = new Deadline(taskInfo[0], taskInfo[1]);
+                taskOutputMessage = taskOutputMessage.concat("a deadline task ");
                 break;
             }
-            // add to the list
             taskList.add(newTask);
             // print out the newly added task
-            returnMessage = returnMessage.concat(newTask + "!" + UIManager.LS + UIManager.INDENT_TWO_TABS +
+            taskOutputMessage = taskOutputMessage.concat(newTask + "!" + UIManager.LS + UIManager.INDENT_TWO_TABS +
                     "Now you have " + taskList.size() + " task(s) in the list!");
         } catch (DukeException dukeException) {
-            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        return returnMessage;
+        uiManager.prints(taskOutputMessage);
     }
-
-    // List all the task in the taskList
-    // Return: String, a reply message for the method operation
 
     /**
      * Lists all the task(s) in the taskList.
-     *
-     * @return All the task(s) in the taskList.
      */
-    public String listTask() {
+    private void listTask() {
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
-            returnMessage = UIManager.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
         } else {
-            returnMessage = UIManager.INDENT_ONE_TAB + "Here is your list of task(s):";
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "Here is your list of task(s):";
             int index = 1;
             for (Task i : taskList) {
-                returnMessage = returnMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
+                taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
                 ++index;
             }
         }
-        return returnMessage;
+        uiManager.prints(taskOutputMessage);
     }
 
     /**
-     * Validate the task index that the user entered.
-     *
-     * @param taskIndexString The whole string of message. To be converted to int.
-     * @return Task index retrieved from the message.
-     * @throws DukeException Index out of bounds, invalid input and array index out of bound.
-     */
-    private int validateTaskIndex(String[] taskIndexString) throws DukeException {
-        int taskIndex;
-        // try retrieving the task index
-        try {
-            taskIndex = Integer.parseInt(taskIndexString[1]) - 1;
-            if (taskIndex < 0 || taskIndex > taskList.size() - 1) {
-                throw new DukeException(DukeException.ExceptionType.EXCEPTION_INDEX_OUT_OF_BOUNDS);
-            }
-        } catch (NumberFormatException exception) {
-            throw new DukeException(DukeException.ExceptionType.EXCEPTION_INVALID_INPUT);
-        } catch (ArrayIndexOutOfBoundsException exception) {
-            throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
-        }
-        return taskIndex;
-    }
-
-    /**
-     * Mark task done based on the index that the user entered.
+     * Prints the task that is marked done by the user.
      *
      * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
-     * @return An outcome message of this method operation.
      */
-    public String markTaskDone(String[] taskIndexString) {
-        // try accessing the taskList and mark the task as done
+    private void markTaskDone(String[] taskIndexString) {
         try {
-            int taskIndex = validateTaskIndex(taskIndexString);
+            int taskIndex = new Parser().parseTaskIndex(taskIndexString, taskList.size() - 1);
             Task task = taskList.get(taskIndex);
             task.setIsDone(true);
-            returnMessage = UIManager.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + UIManager.LS +
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "Completed task " + (taskIndex + 1) + "!" + UIManager.LS +
                     UIManager.INDENT_TWO_TABS + task;
         } catch (DukeException dukeException) {
-            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        return returnMessage;
+        uiManager.prints(taskOutputMessage);
     }
 
-    // Delete specific task
-    // Return: String, a reply message for the method operation
-    // Param: String[] taskIndexString, the original message, to be passed into markDoneOrDelete to process
     /**
      * Delete task based on the index that the user entered.
      *
      * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
-     * @return An outcome message of this method operation.
      */
-    public String deleteTask(String[] taskIndexString) {
-        // try accessing the taskList and delete the task
+    private void deleteTask(String[] taskIndexString) {
         try {
-            int taskIndex = validateTaskIndex(taskIndexString);
+            int taskIndex = new Parser().parseTaskIndex(taskIndexString, taskList.size() - 1);
             Task task = taskList.get(taskIndex);
             taskList.remove(taskIndex);
-            returnMessage = UIManager.INDENT_ONE_TAB + "I have removed the task!" + UIManager.LS +
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "I have removed the task!" + UIManager.LS +
                     UIManager.INDENT_TWO_TABS + task + UIManager.LS + UIManager.INDENT_ONE_TAB +
                     "Now you have " + taskList.size() + " task(s) in the list!";
         } catch (DukeException dukeException) {
-            returnMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        return returnMessage;
+        uiManager.prints(taskOutputMessage);
     }
 }

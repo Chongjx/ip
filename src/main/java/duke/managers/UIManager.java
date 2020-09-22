@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
- * Text UI of the application
+ * Text UI of the application.
  */
 public class UIManager {
     /** Offset for displaying 1st level of message. */
@@ -19,7 +19,7 @@ public class UIManager {
     private final Scanner in;
     private final PrintStream out;
 
-    private String[] splitMessages;
+    private String[] taskDetails;
 
     public UIManager() {
         this(System.in, System.out);
@@ -35,48 +35,20 @@ public class UIManager {
      *
      * @return user command.
      */
-    public TaskManager.CommandType getUserInput() {
+    public String getUserCommandInput() {
         String fullInputMessage = in.nextLine();
-        splitMessages = fullInputMessage.split(" ", 2);
-        String command = splitMessages[0];
+        taskDetails = fullInputMessage.split(" ", 2);
 
-        TaskManager.CommandType userCommand;
-
-        switch (command.toUpperCase()) {
-        case TaskManager.COMMAND_STRING_LIST:
-            userCommand = TaskManager.CommandType.COMMAND_LIST;
-            break;
-        case TaskManager.COMMAND_STRING_DONE:
-            userCommand = TaskManager.CommandType.COMMAND_MARK_DONE;
-            break;
-        case TaskManager.COMMAND_STRING_BYE:
-            userCommand = TaskManager.CommandType.COMMAND_EXIT;
-            break;
-        case TaskManager.COMMAND_STRING_TODO:
-        case TaskManager.COMMAND_STRING_EVENT:
-        case TaskManager.COMMAND_STRING_DEADLINE:
-            userCommand = TaskManager.CommandType.COMMAND_ADD;
-            break;
-        case TaskManager.COMMAND_STRING_DELETE:
-            userCommand = TaskManager.CommandType.COMMAND_DELETE;
-            break;
-        case TaskManager.COMMAND_STRING_EMPTY:
-            userCommand = TaskManager.CommandType.COMMAND_MISSING;
-            break;
-        default:
-            userCommand = TaskManager.CommandType.COMMAND_UNRECOGNIZED;
-            break;
-        }
-        return userCommand;
+        return taskDetails[0];
     }
 
     /**
-     * Returns the split messages
+     * Returns the task details.
      *
-     * @return split messages
+     * @return task details.
      */
-    public String[] getSplitMessages () {
-        return splitMessages;
+    public String[] getTaskDetails() {
+        return taskDetails;
     }
 
     /**
@@ -102,27 +74,27 @@ public class UIManager {
     *
     * @param command Type of command.
      */
-    public void printDefaultMessage(TaskManager.CommandType command) {
-        String replyMessage;
+    public void printsDefaultMessage(TaskManager.CommandType command) {
+        String defaultMessage;
         switch (command) {
         case COMMAND_INIT:
-            replyMessage = INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
+            defaultMessage = INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
                     DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "." + LS +
                     INDENT_ONE_TAB + "What can I do for you?";
             break;
         case COMMAND_EXIT:
-            replyMessage = INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
+            defaultMessage = INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
             break;
         case COMMAND_MISSING:
-            replyMessage = INDENT_ONE_TAB + "You did not enter anything, did you?";
+            defaultMessage = INDENT_ONE_TAB + "You did not enter anything, did you?";
             break;
         case COMMAND_UNRECOGNIZED:
-            replyMessage = INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
+            defaultMessage = INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
             break;
         default:
-            replyMessage = "";
+            defaultMessage = "";
         }
-        prints(replyMessage);
+        prints(defaultMessage);
     }
 
     /**
@@ -133,18 +105,18 @@ public class UIManager {
      * @return Enclosed message.
      */
     public static String encloseWithBrackets(String message, bracketType bracket) {
-        String output;
+        String processedMessage;
         switch (bracket){
         case ROUND_BRACKET:
-            output = "(" + message +")";
+            processedMessage = "(" + message +")";
             break;
         case CURLY_BRACKET:
-            output = "{" + message +"}";
+            processedMessage = "{" + message +"}";
             break;
         case SQUARE_BRACKET:
         default:
-            output = "[" + message +"]";
+            processedMessage = "[" + message +"]";
         }
-        return output;
+        return processedMessage;
     }
 }
