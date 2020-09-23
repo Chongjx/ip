@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Handles the saving and loading of task list data.
+ * Manages the saving and loading of task list data.
  */
 public class IOManager {
     /** Default file path if the user doesn't provide the file name. */

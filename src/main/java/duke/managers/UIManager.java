@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
- * Text UI of the application.
+ * Manages the input and output of the application.
  */
 public class UIManager {
     /** Offset for displaying 1st level of message. */

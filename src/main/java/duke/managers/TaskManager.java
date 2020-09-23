@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stores all the tasks into an ArrayList and manages the adding, listing, deleting and marking task as done operations.
+ * Manages the taskList the adding, listing, deleting and marking task as done operations.
  */
 public class TaskManager {
     /**

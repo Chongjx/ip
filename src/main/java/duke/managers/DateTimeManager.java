@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Returns the current date and time info.
+ * Manages the date time info and format.
  */
 public class DateTimeManager {
     /** An instance of current DateTime */
