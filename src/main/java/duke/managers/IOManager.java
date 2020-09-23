@@ -19,11 +19,14 @@ import java.util.Scanner;
  * Manages the saving and loading of task list data.
  */
 public class IOManager {
-    /** Default file path if the user doesn't provide the file name. */
+    /** Default folder directory. */
     private static final String FILE_DIR = "data";
+    /** Default file path if the user doesn't provide the file name. */
     private static final String FILE_PATH = "data/data.txt";
+    /** Delimiter to split the task info. */
     private static final char FILE_STRING_DELIMITER = '|';
 
+    /** UIManager handler. */
     private final UIManager uiManager;
 
     public IOManager(UIManager uiManager) {
@@ -85,7 +88,7 @@ public class IOManager {
 
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "Found file, loading saved info..." +
                     UIManager.LS);
-            String[] taskInfos;
+            String[] taskInfo;
             String taskType;
             boolean taskIsDone;
             String taskDescription;
@@ -93,11 +96,11 @@ public class IOManager {
 
             // Read all the line till the last line in the file
             while (s.hasNext()) {
-                taskInfos = s.nextLine().split("\\|");
+                taskInfo = s.nextLine().split("\\|");
 
-                taskType = taskInfos[0];
-                taskIsDone = Boolean.parseBoolean(taskInfos[1]);
-                taskDescription = taskInfos[2];
+                taskType = taskInfo[0];
+                taskIsDone = Boolean.parseBoolean(taskInfo[1]);
+                taskDescription = taskInfo[2];
 
                 Task task;
 
@@ -108,12 +111,12 @@ public class IOManager {
                     task.setIsDone(taskIsDone);
                     break;
                 case Event.TASK_TYPE:
-                    taskDateTime = new Parser().parseDateTime(taskInfos[3]);
+                    taskDateTime = new Parser().parseDateTime(taskInfo[3]);
                     task = new Event(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
                     break;
                 case Deadline.TASK_TYPE:
-                    taskDateTime = new Parser().parseDateTime(taskInfos[3]);
+                    taskDateTime = new Parser().parseDateTime(taskInfo[3]);
                     task = new Deadline(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
                     break;

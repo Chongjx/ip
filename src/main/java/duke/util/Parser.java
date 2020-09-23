@@ -201,7 +201,7 @@ public class Parser {
     }
 
     /**
-     * Parses message info the keyword.
+     * Parses message info into a keyword string.
      *
      * @param message The string of the original message.
      * @return Keyword to find.

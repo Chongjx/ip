@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manages the taskList the adding, listing, deleting and marking task as done operations.
+ * Manages the taskList as well as handle the operations prompt by the user. E.g. Add task, Delete task etc.
  */
 public class TaskManager {
     /**
@@ -34,14 +34,15 @@ public class TaskManager {
         COMMAND_INIT
     }
 
-    /** User task list */
+    /** User task list. */
     private final List<Task> taskList;
 
-    /** Output message for the operations */
+    /** Output message for the operations. */
     private String taskOutputMessage;
 
-    /** Handler for an UIManager */
+    /** UIManager handler. */
     private final UIManager uiManager;
+
     /**
      * Creates a new ArrayList to store the tasks. Holds a uiManager handler.
      */
@@ -62,7 +63,7 @@ public class TaskManager {
     /**
      * Executes the function for the respective commands.
      *
-     * @param commandType Type of command to execute
+     * @param commandType Type of command to execute.
      * @param taskInfo Task information for the command.
      */
     public void handleTask(CommandType commandType, String[] taskInfo) {
@@ -99,10 +100,10 @@ public class TaskManager {
     }
 
     /**
-     * Creates new task and add to the task list if the info are valid.
+     * Adds new task into the task list.
      *
-     * @param message The whole string of the original message. To validated and retrieve the description of the task
-     *               and date time info for Event and Deadline task.
+     * @param message The string of the original message. To be parsed and retrieve the task description and date time
+     *                info for Event and Deadline task.
      * @param addTaskType The type of task to be created.
      */
     private void addTask(String[] message, CommandType addTaskType) {
@@ -163,9 +164,9 @@ public class TaskManager {
     }
 
     /**
-     * List the events and deadlines that are on the same date.
+     * Lists the events and deadlines that are on the same date.
      *
-     * @param message Contains the date info.
+     * @param message The string of the original message. To be parsed and get the keyword.
      */
     private void listTaskOnDate(String[] message) {
         if (taskList.size() == 0) {
@@ -204,9 +205,9 @@ public class TaskManager {
     }
 
     /**
-     * Prints the task that is marked done by the user.
+     * Marks a task as done based on the index that the user entered.
      *
-     * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
+     * @param taskIndexString The string of the original message.  To be parsed and retrieve the index as int.
      */
     private void markTaskDone(String[] taskIndexString) {
         try {
@@ -222,9 +223,9 @@ public class TaskManager {
     }
 
     /**
-     * Delete task based on the index that the user entered.
+     * Deletes a task based on the index that the user entered.
      *
-     * @param taskIndexString The task index in string. To be validated and retrieve the index as int.
+     * @param taskIndexString The string of the original message. To be parsed and retrieve the index as int.
      */
     private void deleteTask(String[] taskIndexString) {
         try {
@@ -240,6 +241,11 @@ public class TaskManager {
         uiManager.prints(taskOutputMessage);
     }
 
+    /**
+     * Lists all the task(s) in the taskList that contain the keyword.
+     *
+     * @param message The string of the original message. To be parsed and retrieve the keyword.
+     */
     private void findTask(String[] message) {
         try {
             String keyword = new Parser().parseKeyword(message);

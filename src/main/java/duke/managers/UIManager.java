@@ -19,7 +19,8 @@ public class UIManager {
     private final Scanner in;
     private final PrintStream out;
 
-    private String[] taskDetails;
+    /** Information of a task. */
+    private String[] taskInfo;
 
     public UIManager() {
         this(System.in, System.out);
@@ -37,9 +38,9 @@ public class UIManager {
      */
     public String getUserCommandInput() {
         String fullInputMessage = in.nextLine();
-        taskDetails = fullInputMessage.split(" ", 2);
+        taskInfo = fullInputMessage.split(" ", 2);
 
-        return taskDetails[0];
+        return taskInfo[0];
     }
 
     /**
@@ -47,8 +48,8 @@ public class UIManager {
      *
      * @return task details.
      */
-    public String[] getTaskDetails() {
-        return taskDetails;
+    public String[] getTaskInfo() {
+        return taskInfo;
     }
 
     /**

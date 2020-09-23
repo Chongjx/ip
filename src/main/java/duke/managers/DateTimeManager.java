@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateTimeManager {
 
-    /** List of acceptable date time formats */
+    /** List of acceptable date time formats. */
     public static final String[] DATE_TIME_FORMATS = {
             // Time in 24hr format
             // Date format with - and time format with :
@@ -133,7 +133,7 @@ public class DateTimeManager {
             "dd MMM yyyy hh.mma",
     };
 
-    /** List of acceptable date formats */
+    /** List of acceptable date formats. */
     public static final String[] DATE_FORMATS = {
             "dd/M/yy",
             "dd/MM/yy",
@@ -157,17 +157,20 @@ public class DateTimeManager {
             "dd MMM yyyy",
     };
 
-    /** Fix format for printing */
+    /** Fix format for printing LocalDateTime object. */
     public static final DateTimeFormatter DISPLAY_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mma");
+    /** Fix format for printing LocalDate object. */
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    /** Fix format for printing time. */
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("hh.mma");
+    /** Fix format for printing day of the week. */
     private static final DateTimeFormatter DAY_FORMAT = DateTimeFormatter.ofPattern("EEE");
 
-    /** An instance of current DateTime */
+    /** An instance of current DateTime. */
     private static final LocalDateTime now = LocalDateTime.now();
 
     /**
-     * Returns today's date in the format: dd/MM/yyyy.
+     * Returns today's date in the fixed format.
      *
      * @return Today's date.
      */
@@ -176,7 +179,7 @@ public class DateTimeManager {
     }
 
     /**
-     * Returns current local time in the format: HH.mm.
+     * Returns current local time in the fixed format.
      *
      * @return Current local time.
      */
@@ -185,8 +188,7 @@ public class DateTimeManager {
     }
 
     /**
-     * Returns day of the week in the format of EEE
-     * i.e. For Monday it will return MON.
+     * Returns day of the week in the fixed format.
      *
      * @return Day of the week.
      */

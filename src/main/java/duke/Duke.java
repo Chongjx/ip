@@ -15,11 +15,14 @@ public class Duke {
      */
     private TaskManager.CommandType userCommand;
 
+    /** TaskManager handler for the program. */
     private TaskManager taskManager;
+    /** IOManager handler for the program. */
     private IOManager ioManager;
+    /** UIManager handler for the program. */
     private UIManager uiManager;
 
-    /** Runs the program until termination */
+    /** Runs the program until termination. */
     public void run() {
         init();
         do {
@@ -52,7 +55,7 @@ public class Duke {
         userCommand = new Parser().parseCommand(userCommandInput);
 
         // Retrieve the message is split into command and description
-        String[] splitMessages = uiManager.getTaskDetails();
+        String[] splitMessages = uiManager.getTaskInfo();
 
         taskManager.handleTask(userCommand, splitMessages);
         ioManager.saveTaskList(taskManager.getTaskList());
