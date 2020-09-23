@@ -161,7 +161,7 @@ public class TaskManager {
     /**
      * List the events and deadlines that are on the same date.
      *
-     * @param message Contains the date info
+     * @param message Contains the date info.
      */
     private void listTaskOnDate(String[] message) {
         if (taskList.size() == 0) {
