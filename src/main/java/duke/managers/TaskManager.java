@@ -24,6 +24,7 @@ public class TaskManager {
         COMMAND_LIST,
         COMMAND_MARK_DONE,
         COMMAND_DELETE,
+        COMMAND_FIND,
         COMMAND_EXIT,
         COMMAND_UNRECOGNIZED,
         COMMAND_MISSING,
@@ -77,6 +78,9 @@ public class TaskManager {
             break;
         case COMMAND_DELETE:
             deleteTask(taskInfo);
+            break;
+        case COMMAND_FIND:
+            findTask(taskInfo);
             break;
         case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
@@ -179,6 +183,35 @@ public class TaskManager {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + "I have removed the task!" + UIManager.LS +
                     UIManager.INDENT_TWO_TABS + task + UIManager.LS + UIManager.INDENT_ONE_TAB +
                     "Now you have " + taskList.size() + " task(s) in the list!";
+        } catch (DukeException dukeException) {
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
+        }
+        uiManager.prints(taskOutputMessage);
+    }
+
+    private void findTask(String[] message) {
+        try {
+            String keyword = new Parser().parseKeyword(message);
+            ArrayList<Task> foundTasks = new ArrayList<>();
+
+            // add task that contains the keyword into a new list
+            for (Task t : taskList) {
+                if (t.toString().contains(keyword)) {
+                    foundTasks.add(t);
+                }
+            }
+
+            if (foundTasks.size() == 0) {
+                taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no matched results! (*^▽^*)";
+            } else {
+                taskOutputMessage = UIManager.INDENT_ONE_TAB + "Found these task(s):";
+                int index = 1;
+                for (Task i : foundTasks) {
+                    taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
+                    ++index;
+                }
+            }
+
         } catch (DukeException dukeException) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }

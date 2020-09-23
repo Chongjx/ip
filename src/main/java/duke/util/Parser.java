@@ -16,6 +16,7 @@ public class Parser {
     public static final String COMMAND_STRING_LIST = "LIST";
     public static final String COMMAND_STRING_DONE = "DONE";
     public static final String COMMAND_STRING_DELETE = "DELETE";
+    public static final String COMMAND_STRING_FIND = "FIND";
     public static final String COMMAND_STRING_EMPTY = "";
     public static final String COMMAND_STRING_BYE = "BYE";
 
@@ -49,6 +50,9 @@ public class Parser {
             break;
         case Parser.COMMAND_STRING_DELETE:
             userCommand = TaskManager.CommandType.COMMAND_DELETE;
+            break;
+        case COMMAND_STRING_FIND:
+            userCommand = TaskManager.CommandType.COMMAND_FIND;
             break;
         case Parser.COMMAND_STRING_EMPTY:
             userCommand = TaskManager.CommandType.COMMAND_MISSING;
@@ -105,7 +109,7 @@ public class Parser {
     /**
      * Parses string into the task index.
      *
-     * @param taskIndexString The whole string of message. To be converted to int.
+     * @param taskIndexString The string of the original message, to be converted to int.
      * @param taskListSize Size of the task list. To validate the index value.
      * @return Task index retrieved from the message.
      * @throws DukeException Index out of bounds, invalid input and array index out of bound.
@@ -127,5 +131,23 @@ public class Parser {
             throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
         }
         return taskIndex;
+    }
+
+    /**
+     * Parses message info the keyword.
+     *
+     * @param message The string of the original message.
+     * @return Keyword to find.
+     * @throws DukeException Index out of bounds.
+     */
+    public String parseKeyword(String[] message) throws DukeException {
+        try {
+            if (message[1].isEmpty() || message[1].isBlank()) {
+                throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
+            }
+            return message[1];
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            throw new DukeException(DukeException.ExceptionType.EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS);
+        }
     }
 }
