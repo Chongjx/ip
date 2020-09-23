@@ -16,7 +16,7 @@ public class DukeException extends Exception {
         EXCEPTION_INDEX_OUT_OF_BOUNDS("Ops, you have entered an invalid task number!"),
         EXCEPTION_UNRECOGNIZED_DATE_FORMAT("Ensure that you entered the date in the correct format! E.g. dd MMM " +
                 "yyyy"),
-        EXCEPTION_UNRECOGNIZED_DATE_TIME_FORMAT("Ensure that you entered the date and time in the correct format!" +
+        EXCEPTION_UNRECOGNIZED_DATE_TIME_FORMAT("Ensure that you entered the date and time in the correct format! " +
                 "E.g. dd MMM yyyy HH.mm");
 
         /**
