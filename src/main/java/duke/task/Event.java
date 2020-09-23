@@ -1,6 +1,9 @@
 package duke.task;
 
+import duke.managers.DateTimeManager;
 import duke.managers.UIManager;
+
+import java.time.LocalDateTime;
 
 /**
  * Represents an Event task.
@@ -10,9 +13,9 @@ public class Event extends Task {
     public static final String IDENTIFIER = "/at";
 
     /** The date and time info that it is at */
-    String dateTime;
+    private LocalDateTime dateTime;
 
-    public Event(String description, String dateTime) {
+    public Event(String description, LocalDateTime dateTime) {
         super(description, TASK_TYPE);
         setDateTime(dateTime);
     }
@@ -22,7 +25,7 @@ public class Event extends Task {
      *
      * @param dateTime Event date and time info.
      */
-    public void setDateTime(String dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -32,7 +35,7 @@ public class Event extends Task {
      * @return Event date and time info.
      */
     @Override
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
@@ -43,6 +46,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return super.toString() + UIManager.encloseWithBrackets("At:" + dateTime, UIManager.bracketType.ROUND_BRACKET);
+        return super.toString() + " " + UIManager.encloseWithBrackets("At: " +
+                        dateTime.format(DateTimeManager.DISPLAY_DATE_TIME_FORMAT), UIManager.bracketType.ROUND_BRACKET);
     }
 }
