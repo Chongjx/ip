@@ -13,7 +13,11 @@ public class DukeException extends Exception {
         EXCEPTION_MISSING_DATETIME("You did not set a date/time ¯\\_(ツ)_/¯"),
         EXCEPTION_INVALID_INPUT("Invalid input, cannot convert to integer!"),
         EXCEPTION_ARRAY_INDEX_OUT_OF_BOUNDS("You did not enter any value!"),
-        EXCEPTION_INDEX_OUT_OF_BOUNDS("Ops, you have entered an invalid task number!");
+        EXCEPTION_INDEX_OUT_OF_BOUNDS("Ops, you have entered an invalid task number!"),
+        EXCEPTION_UNRECOGNIZED_DATE_FORMAT("Ensure that you entered the date in the correct format! E.g. dd MMM " +
+                "yyyy"),
+        EXCEPTION_UNRECOGNIZED_DATE_TIME_FORMAT("Ensure that you entered the date and time in the correct format!" +
+                "E.g. dd MMM yyyy HH.mm");
 
         /**
          * The exception message.

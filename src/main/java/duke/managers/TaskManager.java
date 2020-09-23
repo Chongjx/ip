@@ -7,6 +7,8 @@ import duke.task.Todo;
 import duke.util.DukeException;
 import duke.util.Parser;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class TaskManager {
         COMMAND_ADD_EVENT,
         COMMAND_ADD_DEADLINE,
         COMMAND_LIST,
+        COMMAND_ON,
         COMMAND_MARK_DONE,
         COMMAND_DELETE,
         COMMAND_EXIT,
@@ -38,7 +41,6 @@ public class TaskManager {
 
     /** Handler for an UIManager */
     private final UIManager uiManager;
-
     /**
      * Creates a new ArrayList to store the tasks. Holds a uiManager handler.
      */
@@ -72,6 +74,9 @@ public class TaskManager {
         case COMMAND_LIST:
             listTask();
             break;
+        case COMMAND_ON:
+            listTaskOnDate(taskInfo);
+            break;
         case COMMAND_MARK_DONE:
             markTaskDone(taskInfo);
             break;
@@ -98,6 +103,7 @@ public class TaskManager {
      */
     private void addTask(String[] message, CommandType addTaskType) {
         String[] taskInfo;
+        LocalDateTime dateTimeInfo;
         try {
             Task newTask = null;
             taskOutputMessage = UIManager.INDENT_ONE_TAB + "Added ";
@@ -111,12 +117,16 @@ public class TaskManager {
                 break;
             case COMMAND_ADD_EVENT:
                 taskInfo = new Parser().parseTaskInfo(message, Event.IDENTIFIER);
-                newTask = new Event(taskInfo[0], taskInfo[1]);
+                dateTimeInfo = new Parser().parseDateTime(taskInfo[1]);
+
+                newTask = new Event(taskInfo[0], dateTimeInfo);
                 taskOutputMessage = taskOutputMessage.concat("an event ");
                 break;
             case COMMAND_ADD_DEADLINE:
                 taskInfo = new Parser().parseTaskInfo(message, Deadline.IDENTIFIER);
-                newTask = new Deadline(taskInfo[0], taskInfo[1]);
+                dateTimeInfo = new Parser().parseDateTime(taskInfo[1]);
+
+                newTask = new Deadline(taskInfo[0], dateTimeInfo);
                 taskOutputMessage = taskOutputMessage.concat("a deadline task ");
                 break;
             }
@@ -143,6 +153,47 @@ public class TaskManager {
             for (Task i : taskList) {
                 taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
                 ++index;
+            }
+        }
+        uiManager.prints(taskOutputMessage);
+    }
+
+    /**
+     * List the events and deadlines that are on the same date.
+     *
+     * @param message Contains the date info.
+     */
+    private void listTaskOnDate(String[] message) {
+        if (taskList.size() == 0) {
+            taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no event or deadline on that date!";
+        } else {
+            LocalDate taskDate;
+            ArrayList<Task> tasksOnDate = new ArrayList<>();
+            try {
+                // Verify the input info
+                taskDate = new Parser().parseDate(message);
+
+                for (Task i : taskList) {
+                    if (!i.getTaskType().equals(Todo.TASK_TYPE) && i.getDateTime().toLocalDate().isEqual(taskDate)) {
+                            tasksOnDate.add(i);
+                        }
+                }
+
+                if (tasksOnDate.size() == 0) {
+                    taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no event or deadline on that date!";
+                } else {
+                    taskOutputMessage =
+                            UIManager.INDENT_ONE_TAB + "Here is the list of event/deadline(s) on " +
+                                    taskDate.format(DateTimeManager.DATE_FORMAT) + ": ";
+                    int index = 1;
+                    for (Task i : tasksOnDate) {
+                        taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS +
+                                index + "." + i);
+                        ++index;
+                    }
+                }
+            } catch (DukeException dukeException) {
+                taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
             }
         }
         uiManager.prints(taskOutputMessage);
