@@ -12,7 +12,7 @@ public class UIManager {
     public static final String INDENT_ONE_TAB = "    ";
     /** Offset for displaying 2nd level of message. */
     public static final String INDENT_TWO_TABS = "        ";
-    public static final String DIVIDER = "===========================================================================";
+    public static final String DIVIDER = "==========================================================================================";
     /** A platform independent line separator. */
     public static final String LS = System.lineSeparator();
 

@@ -4,11 +4,14 @@ import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
+import duke.util.DukeException;
+import duke.util.Parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,8 +52,14 @@ public class IOManager {
         try {
             writer = new FileWriter(FILE_PATH);
             for (Task task : taskList) {
-                writer.write(task.getTaskType() + FILE_STRING_DELIMITER + task.getIsDone() + FILE_STRING_DELIMITER
-                        + task.getDescription() + FILE_STRING_DELIMITER + task.getDateTime() + UIManager.LS);
+                if (task.getTaskType().equals(Todo.TASK_TYPE)) {
+                    writer.write(task.getTaskType() + FILE_STRING_DELIMITER + task.getIsDone() + FILE_STRING_DELIMITER
+                            + task.getDescription() + UIManager.LS);
+                } else {
+                    writer.write(task.getTaskType() + FILE_STRING_DELIMITER + task.getIsDone() + FILE_STRING_DELIMITER
+                            + task.getDescription() + FILE_STRING_DELIMITER +
+                            task.getDateTime().format(DateTimeManager.DISPLAY_DATE_TIME_FORMAT) + UIManager.LS);
+                }
             }
             writer.close();
         } catch (IOException ioException) {
@@ -80,7 +89,7 @@ public class IOManager {
             String taskType;
             boolean taskIsDone;
             String taskDescription;
-            String taskDateTime;
+            LocalDateTime taskDateTime;
 
             // Read all the line till the last line in the file
             while (s.hasNext()) {
@@ -99,12 +108,12 @@ public class IOManager {
                     task.setIsDone(taskIsDone);
                     break;
                 case Event.TASK_TYPE:
-                    taskDateTime = taskInfos[3];
+                    taskDateTime = new Parser().parseDateTime(taskInfos[3]);
                     task = new Event(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
                     break;
                 case Deadline.TASK_TYPE:
-                    taskDateTime = taskInfos[3];
+                    taskDateTime = new Parser().parseDateTime(taskInfos[3]);
                     task = new Deadline(taskDescription, taskDateTime);
                     task.setIsDone(taskIsDone);
                     break;
@@ -118,6 +127,8 @@ public class IOManager {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "No saved file found!");
         } catch (IllegalStateException exception) {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "Unable to load saved info, file may be corrupted!");
+        } catch (DukeException exception) {
+            loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + exception);
         }
         uiManager.prints(loadTaskMessage);
     }
