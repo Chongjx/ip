@@ -1,6 +1,9 @@
 package duke.task;
 
+import duke.managers.DateTimeManager;
 import duke.managers.UIManager;
+
+import java.time.LocalDateTime;
 
 /**
  * Represents a Deadline task.
@@ -10,9 +13,15 @@ public class Deadline extends Task {
     public static final String IDENTIFIER = "/by";
 
     /** The date and time info that it is due by */
-    String dateTime;
+    private LocalDateTime dateTime;
 
-    public Deadline(String description, String dateTime) {
+    /**
+     * Overloads the constructor for deadline. Accepts date time in string format.
+     *
+     * @param description Description of the task.
+     * @param dateTime Date and time info of the task.
+     */
+    public Deadline(String description, LocalDateTime dateTime) {
         super(description, TASK_TYPE);
         setDateTime(dateTime);
     }
@@ -20,19 +29,19 @@ public class Deadline extends Task {
     /**
      * Sets the Deadline date and time info.
      *
-     * @param dateTime Deadline date and time info.
+     * @param dateTime Deadline date and time info in string format.
      */
-    public void setDateTime(String dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
     /**
      * Gets the Deadline date and time info.
      *
-     * @return Deadline date and time info.
+     * @return Deadline date and time info in string format.
      */
     @Override
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
@@ -43,6 +52,9 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return super.toString() + UIManager.encloseWithBrackets("By:" + dateTime, UIManager.bracketType.ROUND_BRACKET);
+        String message;
+        message = super.toString() + " " + UIManager.encloseWithBrackets("By: " +
+                        dateTime.format(DateTimeManager.DISPLAY_DATE_TIME_FORMAT), UIManager.bracketType.ROUND_BRACKET);
+        return message;
     }
 }

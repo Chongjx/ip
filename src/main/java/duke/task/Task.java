@@ -2,6 +2,8 @@ package duke.task;
 
 import duke.managers.UIManager;
 
+import java.time.LocalDateTime;
+
 /**
  * Contains the basic info of a task.
  */
@@ -78,7 +80,7 @@ public abstract class Task {
      *
      * @return Date and time info of the task.
      */
-    public abstract String getDateTime();
+    public abstract LocalDateTime getDateTime();
 
     /**
      * Overrides the parent class toString method and returns the task type, isDone status and description with formatting.

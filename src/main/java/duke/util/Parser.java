@@ -1,14 +1,20 @@
 package duke.util;
 
-import duke.Duke;
+import duke.managers.DateTimeManager;
 import duke.managers.TaskManager;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 
 /**
  * Parses user input.
  */
 public class Parser {
     /**
-     * Static final variables for the list of command string
+     * String value of all the command types.
      */
     public static final String COMMAND_STRING_TODO = "TODO";
     public static final String COMMAND_STRING_EVENT = "EVENT";
@@ -19,6 +25,7 @@ public class Parser {
     public static final String COMMAND_STRING_FIND = "FIND";
     public static final String COMMAND_STRING_EMPTY = "";
     public static final String COMMAND_STRING_BYE = "BYE";
+    private static final String COMMAND_STRING_ON = "ON";
 
     /**
      * Parsers user input into command for execution.
@@ -30,31 +37,34 @@ public class Parser {
         TaskManager.CommandType userCommand;
 
         switch (userCommandInput.toUpperCase()) {
-        case Parser.COMMAND_STRING_TODO:
+        case COMMAND_STRING_TODO:
             userCommand = TaskManager.CommandType.COMMAND_ADD_TODO;
             break;
-        case Parser.COMMAND_STRING_EVENT:
+        case COMMAND_STRING_EVENT:
             userCommand = TaskManager.CommandType.COMMAND_ADD_EVENT;
             break;
-        case Parser.COMMAND_STRING_DEADLINE:
+        case COMMAND_STRING_DEADLINE:
             userCommand = TaskManager.CommandType.COMMAND_ADD_DEADLINE;
             break;
-        case Parser.COMMAND_STRING_LIST:
+        case COMMAND_STRING_LIST:
             userCommand = TaskManager.CommandType.COMMAND_LIST;
             break;
-        case Parser.COMMAND_STRING_DONE:
+        case COMMAND_STRING_ON:
+            userCommand = TaskManager.CommandType.COMMAND_ON;
+            break;
+        case COMMAND_STRING_DONE:
             userCommand = TaskManager.CommandType.COMMAND_MARK_DONE;
             break;
-        case Parser.COMMAND_STRING_BYE:
+        case COMMAND_STRING_BYE:
             userCommand = TaskManager.CommandType.COMMAND_EXIT;
             break;
-        case Parser.COMMAND_STRING_DELETE:
+        case COMMAND_STRING_DELETE:
             userCommand = TaskManager.CommandType.COMMAND_DELETE;
             break;
         case COMMAND_STRING_FIND:
             userCommand = TaskManager.CommandType.COMMAND_FIND;
             break;
-        case Parser.COMMAND_STRING_EMPTY:
+        case COMMAND_STRING_EMPTY:
             userCommand = TaskManager.CommandType.COMMAND_MISSING;
             break;
         default:
@@ -66,7 +76,7 @@ public class Parser {
 
     /**
      * Parsers string info into description and date time info for adding of task.
-     * Ensures that description and the required keyword are not empty are present.
+     * Ensures that description and the required keyword are present.
      *
      * @param message The string of the original message, to be processed for Event and Deadline tasks.
      * @param identifier Used to split the original message to obtain the data time info for Event and Deadline tasks.
@@ -78,7 +88,7 @@ public class Parser {
         String description;
         String dateTimeInfo;
         try {
-            description = message[1];
+            description = message[1].trim();
             // if the message is empty or blank, throw missing description exception
             if (description.isEmpty() || description.isBlank()) {
                 throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
@@ -90,6 +100,10 @@ public class Parser {
                 }
                 // split message based on identifier
                 descriptionAndDateTimeInfo = message[1].split(identifier, 2);
+
+                descriptionAndDateTimeInfo[0] = descriptionAndDateTimeInfo[0].trim();
+                descriptionAndDateTimeInfo[1] = descriptionAndDateTimeInfo[1].trim();
+
                 description = descriptionAndDateTimeInfo[0];
                 dateTimeInfo = descriptionAndDateTimeInfo[1];
                 // if missing description or datetime, throw respective exception
@@ -104,6 +118,59 @@ public class Parser {
             throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DESCRIPTION);
         }
         return descriptionAndDateTimeInfo;
+    }
+
+    /**
+     * Parses string info into a LocalDateTime object.
+     *
+     * @param dateTimeInfo The string of the original message, to be processed for Event and Deadline tasks.
+     * @return The LocalDateTime object.
+     * @throws DukeException Invalid date time format entered.
+     */
+    public LocalDateTime parseDateTime(String dateTimeInfo) throws DukeException {
+        // Verify against all time format
+        for (String dt : DateTimeManager.DATE_TIME_FORMATS) {
+            try {
+                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+                builder.parseCaseInsensitive();
+                builder.appendPattern(dt);
+
+                DateTimeFormatter format = builder.toFormatter();
+                return LocalDateTime.parse(dateTimeInfo, format);
+            } catch (DateTimeParseException e) {
+                // continue the loop
+            }
+        }
+        throw new DukeException(DukeException.ExceptionType.EXCEPTION_UNRECOGNIZED_DATE_TIME_FORMAT);
+    }
+
+    /**
+     * Parses string info into a LocalDate object.
+     *
+     * @param dateInfo The string of the original message.
+     * @return The LocalDate object.
+     * @throws DukeException Invalid date format entered.
+     */
+    public LocalDate parseDate(String[] dateInfo) throws DukeException {
+        for (String d : DateTimeManager.DATE_FORMATS) {
+            try {
+                if (dateInfo[1].isBlank() || dateInfo[1].isEmpty()) {
+                    throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DATETIME);
+                }
+
+                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+                builder.parseCaseInsensitive();
+                builder.appendPattern(d);
+
+                DateTimeFormatter format = builder.toFormatter();
+                return LocalDate.parse(dateInfo[1], format);
+            } catch (ArrayIndexOutOfBoundsException exception) {
+                throw new DukeException(DukeException.ExceptionType.EXCEPTION_MISSING_DATETIME);
+            } catch (DateTimeParseException exception) {
+                // continue the loop
+            }
+        }
+        throw new DukeException(DukeException.ExceptionType.EXCEPTION_UNRECOGNIZED_DATE_FORMAT);
     }
 
     /**
