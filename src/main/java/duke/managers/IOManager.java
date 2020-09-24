@@ -26,11 +26,7 @@ public class IOManager {
     /** Delimiter to split the task info. */
     private static final char FILE_STRING_DELIMITER = '|';
 
-    /** UIManager handler. */
-    private final UIManager uiManager;
-
-    public IOManager(UIManager uiManager) {
-        this.uiManager = uiManager;
+    public IOManager() {
     }
 
     /**
@@ -74,8 +70,9 @@ public class IOManager {
      * Loads the saved data from the txt file into the task list if it exists.
      *
      * @param taskList List of task to be loaded into.
+     * @return Result of the operation.
      */
-    public void loadTaskList(List<Task> taskList) {
+    public String loadTaskList(List<Task> taskList) {
         // Create a File for the given file path
         File file = new File(FILE_PATH);
         String loadTaskMessage = "";
@@ -133,6 +130,6 @@ public class IOManager {
         } catch (DukeException exception) {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + exception);
         }
-        uiManager.prints(loadTaskMessage);
+        return loadTaskMessage;
     }
 }

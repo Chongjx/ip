@@ -7,11 +7,15 @@ event
 event test 1
 event test 1 /at
 event test 1 /at tmr
+event test 1 /at 24 09 2020
+event test 1 /at 24 09 2020 1200
 list
 deadline
 deadline test 2
 deadline test 2 /by
 deadline test 2 /by tmr
+deadline test 2 /by 24 sep 2020 13:00
+deadline test 3 /by 24-Sep-2020 02:00pm
 list
 done 0
 done hi
@@ -21,6 +25,15 @@ done 2
 delete
 delete 0
 delete none
-delete 2
+delete 4
+on
+on
+on 22 sep
+on 22-09-2020
+on 24-SEP-20
+find
+find
+find 20
+find 24
 list
 bye

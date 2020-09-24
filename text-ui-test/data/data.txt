@@ -1,2 +1,3 @@
-T|false|watch lecture|
-D|false|test 2 | tmr
+T|false|watch lecture
+E|true|test 1|24 Sep 2020 12:00PM
+D|false|test 2|24 Sep 2020 01:00PM

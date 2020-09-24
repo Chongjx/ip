@@ -71,34 +71,6 @@ public class UIManager {
     }
 
     /**
-    * Returns the default message of respective commands.
-    *
-    * @param command Type of command.
-     */
-    public void printsDefaultMessage(TaskManager.CommandType command) {
-        String defaultMessage;
-        switch (command) {
-        case COMMAND_INIT:
-            defaultMessage = INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
-                    DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "." + LS +
-                    INDENT_ONE_TAB + "What can I do for you?";
-            break;
-        case COMMAND_EXIT:
-            defaultMessage = INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
-            break;
-        case COMMAND_MISSING:
-            defaultMessage = INDENT_ONE_TAB + "You did not enter anything, did you?";
-            break;
-        case COMMAND_UNRECOGNIZED:
-            defaultMessage = INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
-            break;
-        default:
-            defaultMessage = "";
-        }
-        prints(defaultMessage);
-    }
-
-    /**
      * Returns the message enclosed with the selected bracket.
      *
      * @param message Original string of the message.

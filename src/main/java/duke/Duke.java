@@ -38,12 +38,12 @@ public class Duke {
         userCommand = TaskManager.CommandType.COMMAND_INIT;
 
         uiManager = new UIManager();
-        taskManager = new TaskManager(uiManager);
-        ioManager = new IOManager(uiManager);
+        taskManager = new TaskManager();
+        ioManager = new IOManager();
 
         // Initialize the task list from the txt file
-        ioManager.loadTaskList(taskManager.getTaskList());
-        uiManager.printsDefaultMessage(userCommand);
+        uiManager.prints(ioManager.loadTaskList(taskManager.getTaskList()));
+        uiManager.prints(taskManager.getCommandDefaultMessage(TaskManager.CommandType.COMMAND_INIT));
     }
 
     /**
@@ -57,7 +57,7 @@ public class Duke {
         // Retrieve the message is split into command and description
         String[] splitMessages = uiManager.getTaskInfo();
 
-        taskManager.handleTask(userCommand, splitMessages);
+        uiManager.prints(taskManager.handleTask(userCommand, splitMessages));
         ioManager.saveTaskList(taskManager.getTaskList());
     }
 

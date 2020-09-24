@@ -37,17 +37,10 @@ public class TaskManager {
     /** User task list. */
     private final List<Task> taskList;
 
-    /** Output message for the operations. */
-    private String taskOutputMessage;
-
-    /** UIManager handler. */
-    private final UIManager uiManager;
-
     /**
-     * Creates a new ArrayList to store the tasks. Holds a uiManager handler.
+     * Creates a new ArrayList to store the tasks.
      */
-    public TaskManager(UIManager uiManager) {
-        this.uiManager = uiManager;
+    public TaskManager() {
         taskList = new ArrayList<>();
     }
 
@@ -61,54 +54,90 @@ public class TaskManager {
     }
 
     /**
-     * Executes the function for the respective commands.
+     * Executes the function for the respective commands and returns the result of the command operation.
      *
      * @param commandType Type of command to execute.
      * @param taskInfo Task information for the command.
+     * @return Result of the operation.
      */
-    public void handleTask(CommandType commandType, String[] taskInfo) {
+    public String handleTask(CommandType commandType, String[] taskInfo) {
+        String taskOutputMessage;
+
         switch (commandType) {
         case COMMAND_ADD_TODO:
         case COMMAND_ADD_EVENT:
         case COMMAND_ADD_DEADLINE:
-            addTask(taskInfo, commandType);
+            taskOutputMessage = addTask(taskInfo, commandType);
             break;
         case COMMAND_LIST:
-            listTask();
+            taskOutputMessage = listTask();
             break;
         case COMMAND_ON:
-            listTaskOnDate(taskInfo);
+            taskOutputMessage = listTaskOnDate(taskInfo);
             break;
         case COMMAND_MARK_DONE:
-            markTaskDone(taskInfo);
+            taskOutputMessage = markTaskDone(taskInfo);
             break;
         case COMMAND_DELETE:
-            deleteTask(taskInfo);
+            taskOutputMessage = deleteTask(taskInfo);
             break;
         case COMMAND_FIND:
-            findTask(taskInfo);
+            taskOutputMessage = findTask(taskInfo);
             break;
         case COMMAND_UNRECOGNIZED:
         case COMMAND_MISSING:
         case COMMAND_INIT:
         case COMMAND_EXIT:
-            uiManager.printsDefaultMessage(commandType);
+            taskOutputMessage = getCommandDefaultMessage(commandType);
             break;
         default:
+            taskOutputMessage = "";
             break;
         }
+        return taskOutputMessage;
     }
 
     /**
-     * Adds new task into the task list.
+     * Returns the default message of respective commands.
+     *
+     * @param command Type of command.
+     * @return Default command message.
+     */
+    public String getCommandDefaultMessage(TaskManager.CommandType command) {
+        String defaultMessage;
+        switch (command) {
+        case COMMAND_INIT:
+            defaultMessage = UIManager.INDENT_ONE_TAB + "Hello! I'm Jay. Today is " + DateTimeManager.getDate() + ", " +
+                    DateTimeManager.getDay() + ". The time now is " + DateTimeManager.getTime() + "." + UIManager.LS +
+                    UIManager.INDENT_ONE_TAB + "What can I do for you?";
+            break;
+        case COMMAND_EXIT:
+            defaultMessage = UIManager.INDENT_ONE_TAB + "Bye! Hope to see you again soon!";
+            break;
+        case COMMAND_MISSING:
+            defaultMessage = UIManager.INDENT_ONE_TAB + "You did not enter anything, did you?";
+            break;
+        case COMMAND_UNRECOGNIZED:
+            defaultMessage = UIManager.INDENT_ONE_TAB + "Sorry I don't know what that means... >.<";
+            break;
+        default:
+            defaultMessage = "";
+        }
+        return defaultMessage;
+    }
+
+    /**
+     * Adds new task into the task list and returns the result of the operation.
      *
      * @param message The string of the original message. To be parsed and retrieve the task description and date time
      *                info for Event and Deadline task.
      * @param addTaskType The type of task to be created.
+     * @return Result of the operation.
      */
-    private void addTask(String[] message, CommandType addTaskType) {
+    private String addTask(String[] message, CommandType addTaskType) {
         String[] taskInfo;
         LocalDateTime dateTimeInfo;
+        String taskOutputMessage;
         try {
             Task newTask = null;
             taskOutputMessage = UIManager.INDENT_ONE_TAB + "Added ";
@@ -142,13 +171,16 @@ public class TaskManager {
         } catch (DukeException dukeException) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 
     /**
-     * Lists all the task(s) in the taskList.
+     * Generates a list of all the task(s) in the taskList and returns the result of the operation.
+     *
+     * @return Result of the operation.
      */
-    private void listTask() {
+    private String listTask() {
+        String taskOutputMessage;
         // print out default message if there are no task, else print the list of tasks
         if (taskList.size() == 0) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are currently no task in the list! (*^▽^*)";
@@ -160,15 +192,17 @@ public class TaskManager {
                 ++index;
             }
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 
     /**
-     * Lists the events and deadlines that are on the same date.
+     * Generates a list of events and deadlines that are on the same date and returns the result of the operation.
      *
      * @param message The string of the original message. To be parsed and get the keyword.
+     * @return Result of the operation.
      */
-    private void listTaskOnDate(String[] message) {
+    private String listTaskOnDate(String[] message) {
+        String taskOutputMessage;
         if (taskList.size() == 0) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no event or deadline on that date!";
         } else {
@@ -189,7 +223,7 @@ public class TaskManager {
                 } else {
                     taskOutputMessage =
                             UIManager.INDENT_ONE_TAB + "Here is the list of event/deadline(s) on " +
-                                    taskDate.format(DateTimeManager.DATE_FORMAT) + ": ";
+                                    taskDate.format(DateTimeManager.DATE_FORMAT) + ":";
                     int index = 1;
                     for (Task i : tasksOnDate) {
                         taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS +
@@ -201,15 +235,17 @@ public class TaskManager {
                 taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
             }
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 
     /**
-     * Marks a task as done based on the index that the user entered.
+     * Marks a task as done based on the index that the user entered and returns the result of the operation.
      *
      * @param taskIndexString The string of the original message.  To be parsed and retrieve the index as int.
+     * @return Result of the operation.
      */
-    private void markTaskDone(String[] taskIndexString) {
+    private String markTaskDone(String[] taskIndexString) {
+        String taskOutputMessage;
         try {
             int taskIndex = new Parser().parseTaskIndex(taskIndexString, taskList.size() - 1);
             Task task = taskList.get(taskIndex);
@@ -219,15 +255,17 @@ public class TaskManager {
         } catch (DukeException dukeException) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 
     /**
-     * Deletes a task based on the index that the user entered.
+     * Deletes a task based on the index that the user entered and returns the result of the operation.
      *
      * @param taskIndexString The string of the original message. To be parsed and retrieve the index as int.
+     * @return Result of the operation.
      */
-    private void deleteTask(String[] taskIndexString) {
+    private String deleteTask(String[] taskIndexString) {
+        String taskOutputMessage;
         try {
             int taskIndex = new Parser().parseTaskIndex(taskIndexString, taskList.size() - 1);
             Task task = taskList.get(taskIndex);
@@ -238,15 +276,18 @@ public class TaskManager {
         } catch (DukeException dukeException) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 
     /**
-     * Lists all the task(s) in the taskList that contain the keyword.
+     * Generates a list of task(s) in the taskList that contain the keyword and returns the result of the
+     * operation.
      *
      * @param message The string of the original message. To be parsed and retrieve the keyword.
+     * @return Result of the operation.
      */
-    private void findTask(String[] message) {
+    private String findTask(String[] message) {
+        String taskOutputMessage;
         try {
             String keyword = new Parser().parseKeyword(message);
             ArrayList<Task> foundTasks = new ArrayList<>();
@@ -261,7 +302,8 @@ public class TaskManager {
             if (foundTasks.size() == 0) {
                 taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no matched results! (*^▽^*)";
             } else {
-                taskOutputMessage = UIManager.INDENT_ONE_TAB + "Found these task(s):";
+                taskOutputMessage = UIManager.INDENT_ONE_TAB + "Found these task(s) that match the keyword \"" +
+                        keyword + "\":";
                 int index = 1;
                 for (Task i : foundTasks) {
                     taskOutputMessage = taskOutputMessage.concat(UIManager.LS + UIManager.INDENT_TWO_TABS + index + "." + i);
@@ -272,6 +314,6 @@ public class TaskManager {
         } catch (DukeException dukeException) {
             taskOutputMessage = UIManager.INDENT_ONE_TAB + dukeException.getMessage();
         }
-        uiManager.prints(taskOutputMessage);
+        return taskOutputMessage;
     }
 }
