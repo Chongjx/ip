@@ -2,8 +2,8 @@
 
 ## Features 
 
-### \#1: Add a task into the list:
-Creates and add a new Todo or Event or Deadline task into the task list.
+### \#1: Add a task into the list
+Creates and add a new Todo, Event or Deadline task into the task list.
 
 ### Usage
 
@@ -26,24 +26,24 @@ The user first enters the keyword to indicate the type of the task to be added, 
 
 Example of usage: 
 
-`Todo task 1`<br/>
-`Event event 2 /at 30 Sep 2020 15.00`<br/>
-`Deadline deadline 3 /by 30 09 20 03:00pm`<br/>
+1. `Todo task 1`<br/>
+2. `Event event 2 /at 30 Sep 2020 15.00`<br/>
+3. `Deadline deadline 3 /by 30 09 20 03:00pm`<br/>
 
 Expected outcome:
 
-`Added a todo task [T][✘] task 1!`<br/>
+1. `Added a todo task [T][✘] task 1!`<br/>
 `Now you have 1 task(s) in the list!`
 
-`Added an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`<br/>
+2. `Added an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`<br/>
 `Now you have 2 task(s) in the list!`
 
-`Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`<br/>
+3. `Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`<br/>
 `Now you have 3 task(s) in the list!`
 
-### \#2: List all the tasks:
-List all the tasks in the task list, showing their task type, either Todo, event or deadline, done status and
- description. Date and time info will also be displayed for event and deadline tasks. 
+### \#2: List all the tasks
+List all the tasks in the task list, showing their task type, either Todo, Event or Deadline, done status and
+ description. Date and time info will also be displayed for Event and Deadline tasks. 
 
 ### Usage
 
@@ -61,8 +61,8 @@ Expected outcome:
 `2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`<br/>
 `3.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`
 
-### \#3: List all events and deadlines that occur on a specific date:
-Find and display all the events and deadlines in the task list that occur on a specific date.
+### \#3: List all Events and Deadlines that occur on a specific date
+Find and list all the Events and Deadlines in the task list that occur on a specific date.
 
 ### Usage
 
@@ -81,7 +81,7 @@ Expected outcome:
 `1.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`<br/>
 `2.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`
 
-### \#4: Mark task as done:
+### \#4: Mark task as done
 Mark a completed task as done.
 
 ### Usage
@@ -98,10 +98,10 @@ Example of usage:
 
 Expected outcome:
 
-`Completed task 1!`<br/>  
+`Completed task 1!`<br/>
 `[T][✓] task 1`
 
-### \#5: Delete a task from the list:
+### \#5: Delete a task from the list
 Delete an unwanted task from the task list.
 
 ### Usage
@@ -122,7 +122,7 @@ Expected outcome:
 `[T][✓] task 1`<br/>
 `Now you have 2 task(s) in the list!`
 
-### \#6: List all the tasks that contain the keyword:
+### \#6: List all the tasks that contain the keyword
 Find and list all the tasks that contain the specific keyword.
 
 ### Usage
@@ -145,7 +145,7 @@ Expected outcome:
 `1.[E][✘] event 2 (By: 30 Sep 2020 03:00PM)`<br/>
 `2.[D][✘] deadline 3 (At: 30 Sep 2020 03:00AM)`
 
-### \#7: Saving and loading of the list:
+### \#7: Saving and loading of the list
 Automated saving and loading of the task list to and fro a text file.
 
 ### Usage
@@ -163,7 +163,7 @@ Expected outcome if the saved data is found: <br/>
 `Found file, loading saved info...` <br/>
 `Successfully loaded saved info!`
 
-### List of acceptable date time format:
+### List of acceptable date time formats:
 Date formats: 
 * dd-M-yy
 * dd-MM-yy
