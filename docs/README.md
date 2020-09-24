@@ -2,7 +2,7 @@
 
 ## Features 
 
-### Add a task into the list:
+### \#1: Add a task into the list:
 Creates and add a new Todo or Event or Deadline task into the task list.
 
 ### Usage
@@ -17,8 +17,8 @@ Creates and add a new Todo or Event or Deadline task into the task list.
 `/by` - Specifies the date and time information for the Deadline.
 
 The user first enters the keyword to indicate the type of the task to be added, followed by the task description
-. The user is also required to enter the date and time information for Event and Deadline task after the respective
-  identifiers.
+. The user is also required to enter the respective identifiers followed by the date and time information for Event and
+ Deadline task.
 
 *Note:*<br/>
 *The keywords are case-insensitive while the identifiers are case-sensitive. A list of acceptable date and time
@@ -26,22 +26,22 @@ The user first enters the keyword to indicate the type of the task to be added, 
 
 Example of usage: 
 
-`Todo task 1`<br/>
-`Event event 2 /at 30 Sep 2020 15.00`<br/>
+`Todo task 1`  
+`Event event 2 /at 30 Sep 2020 15.00`  
 `Deadline deadline 3 /by 30 09 20 03:00pm`
 
 Expected outcome:
 
-`Added a todo task [T][✘] task 1!`<br/>
-`Now you have n task(s) in the list!`
+`Added a todo task [T][✘] task 1!   
+Now you have n task(s) in the list!`
 
-`Added a an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`<br/>
-`Now you have n task(s) in the list!`
+`Added an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!  
+Now you have n task(s) in the list!`
 
-`Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`<br/>
-`Now you have n task(s) in the list!`
+`Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!   
+Now you have n task(s) in the list!`
 
-### List all the tasks:
+### \#2: List all the tasks:
 List all the tasks in the task list, showing their task type, either Todo, event or deadline, done status and
  description. Date and time info will also be displayed for event and deadline tasks. 
 
@@ -56,12 +56,12 @@ Example of usage:
 
 Expected outcome:
 
-`Here is your list of task(s):`<br/>
-`1.[T][✘] task 1` <br/>
-`2.[E][✓] event 2 (At: 23 Sep 2020 01:00PM)` <br/>
-`3.[D][✘] deadline 3 (By: 24 Sep 2020 05:00PM)`
+`Here is your list of task(s):   
+1.[T][✘] task 1   
+2.[E][✓] event 2 (At: 23 Sep 2020 01:00PM)   
+3.[D][✘] deadline 3 (By: 24 Sep 2020 05:00PM)`
 
-### List all events and deadlines that occur on a specific date:
+### \#3: List all events and deadlines that occur on a specific date:
 Find and display all the events and deadlines in the task list that occur on a specific date.
 
 ### Usage
@@ -77,11 +77,11 @@ Example of usage:
 
 Expected outcome:
 
-`Here is the list of event(s) and deadline(s) on 30 Sep 2020:`<br/>
-`1.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`<br/>
-`2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`
+`Here is the list of event(s) and deadline(s) on 30 Sep 2020:   
+1.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)   
+2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`
 
-### Mark task as done:
+### \#4: Mark task as done:
 Mark a completed task as done.
 
 ### Usage
@@ -98,10 +98,10 @@ Example of usage:
 
 Expected outcome:
 
-`Completed task 1!`
-`[T][✓] task 1`
+`Completed task 1!   
+[T][✓] task 1`
 
-### Delete a task from the list:
+### \#5: Delete a task from the list:
 Delete an unwanted task from the task list.
 
 ### Usage
@@ -118,11 +118,11 @@ Example of usage:
 
 Expected outcome:
 
-`I have removed the task!`
-`[T][✓] task 1` <br/>
-`Now you have n task(s) in the list!`
+`I have removed the task!   
+[T][✓] task 1   
+Now you have n task(s) in the list!`
 
-### List all the tasks that contain the keyword:
+### \#6: List all the tasks that contain the keyword:
 Find and list all the tasks that contain the specific keyword.
 
 ### Usage
@@ -145,7 +145,7 @@ Expected outcome:
 `1.[D][✘] Duke (By: 24 Sep 2020 05:00PM)` <br/>
 `2.[E][✘] meeting (At: 24 Sep 2020 08:00AM)`
 
-### Saving and loading of the list:
+### \#7: Saving and loading of the list:
 Automated saving and loading of the task list to and fro a text file.
 
 ### Usage
@@ -155,13 +155,13 @@ On start-up, the program tries to load the saved task list from the text file. I
  changes is made.
 
 Expected outcome if no folder or file is found: <br/>
-`Looking for existing file...`<br/>
-`No saved file found!`
+`Looking for existing file...   
+No saved file found!`
 
 Expected outcome if the saved data is found: <br/>
-`Looking for existing file...`<br/>
-`Found file, loading saved info...`<br/>
-`Successfully loaded saved info!`
+`Looking for existing file...   
+Found file, loading saved info...   
+Successfully loaded saved info!`
 
 ### List of acceptable date time format:
 Date formats: 
@@ -193,7 +193,7 @@ Time formats:
 
 *Note:*<br/>
 *HH represents the time in 24hr format while hh represents the time in 12hr format. The 'a' in the 12hr format
- represents 'AM' or 'PM'.
+ represents 'AM' or 'PM'.*
 
 Examples:<br/>
 `01-JAN-2020 06:00`<br/>
