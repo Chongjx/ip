@@ -78,7 +78,7 @@ public class Parser {
      * Parsers string info into description and date time info for adding of task.
      * Ensures that description and the required keyword are present.
      *
-     * @param message The string of the original message, to be processed for Event and Deadline tasks.
+     * @param message The string array of the original message, to be parsed into description and date time info.
      * @param identifier Used to split the original message to obtain the data time info for Event and Deadline tasks.
      * @return The description and date and time info, in index 0 and index 1 respectively, for Event and Deadline task.
      * @throws DukeException Missing description, identifier or date and time info.
@@ -123,7 +123,7 @@ public class Parser {
     /**
      * Parses string info into a LocalDateTime object.
      *
-     * @param dateTimeInfo The string of the original message, to be processed for Event and Deadline tasks.
+     * @param dateTimeInfo The string array of the original message, to be parsed into a LocalDateTime object.
      * @return The LocalDateTime object.
      * @throws DukeException Invalid date time format entered.
      */
@@ -147,7 +147,7 @@ public class Parser {
     /**
      * Parses string info into a LocalDate object.
      *
-     * @param dateInfo The string of the original message.
+     * @param dateInfo The string array of the original message, to be parsed into a LocalDate object.
      * @return The LocalDate object.
      * @throws DukeException Invalid date format entered.
      */
@@ -176,7 +176,7 @@ public class Parser {
     /**
      * Parses string into the task index.
      *
-     * @param taskIndexString The string of the original message, to be converted to int.
+     * @param taskIndexString The string array of the original message, to be parsed into int.
      * @param taskListSize Size of the task list. To validate the index value.
      * @return Task index retrieved from the message.
      * @throws DukeException Index out of bounds, invalid input and array index out of bound.
@@ -201,9 +201,9 @@ public class Parser {
     }
 
     /**
-     * Parses message info into a keyword string.
+     * Parses string info into a keyword string.
      *
-     * @param message The string of the original message.
+     * @param message The string array of the original message, to be parsed into a string.
      * @return Keyword to find.
      * @throws DukeException Index out of bounds.
      */

@@ -15,11 +15,11 @@ public class Duke {
      */
     private TaskManager.CommandType userCommand;
 
-    /** TaskManager handler for the program. */
+    /** TaskManager for the program. */
     private TaskManager taskManager;
-    /** IOManager handler for the program. */
+    /** IOManager for the program. */
     private IOManager ioManager;
-    /** UIManager handler for the program. */
+    /** UIManager for the program. */
     private UIManager uiManager;
 
     /** Runs the program until termination. */

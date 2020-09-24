@@ -157,13 +157,13 @@ public class DateTimeManager {
             "dd MMM yyyy",
     };
 
-    /** Fix format for printing LocalDateTime object. */
+    /** Fixed format for printing LocalDateTime object. */
     public static final DateTimeFormatter DISPLAY_DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy hh:mma");
-    /** Fix format for printing LocalDate object. */
+    /** Fixed format for printing LocalDate object. */
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
-    /** Fix format for printing time. */
+    /** Fixed format for printing time. */
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("hh.mma");
-    /** Fix format for printing day of the week. */
+    /** Fixed format for printing day of the week. */
     private static final DateTimeFormatter DAY_FORMAT = DateTimeFormatter.ofPattern("EEE");
 
     /** An instance of current DateTime. */

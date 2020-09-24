@@ -33,7 +33,7 @@ public class IOManager {
      * Saves all the task(s) in the task list into a txt file.
      * Creates the folder and txt file if they are missing.
      *
-     * @param taskList A list of Task.
+     * @param taskList A task list.
      */
     public void saveTaskList(List<Task> taskList) {
         // Create a File for the given file path

@@ -175,7 +175,7 @@ public class TaskManager {
     }
 
     /**
-     * Generates a list of all the task(s) in the taskList and returns the result of the operation.
+     * Lists all the task(s) in the taskList and returns the result of the operation.
      *
      * @return Result of the operation.
      */
@@ -196,7 +196,7 @@ public class TaskManager {
     }
 
     /**
-     * Generates a list of events and deadlines that are on the same date and returns the result of the operation.
+     * Lists all the Events and Deadlines that are on the same date and returns the result of the operation.
      *
      * @param message The string of the original message. To be parsed and get the keyword.
      * @return Result of the operation.
@@ -280,7 +280,7 @@ public class TaskManager {
     }
 
     /**
-     * Generates a list of task(s) in the taskList that contain the keyword and returns the result of the
+     * Lists all the task(s) in the taskList that contain the keyword and returns the result of the
      * operation.
      *
      * @param message The string of the original message. To be parsed and retrieve the keyword.

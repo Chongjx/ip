@@ -12,11 +12,11 @@ public class Deadline extends Task {
     public static final String TASK_TYPE = "D";
     public static final String IDENTIFIER = "/by";
 
-    /** The date and time info that it is due by */
+    /** The date and time info that it is due by. */
     private LocalDateTime dateTime;
 
     /**
-     * Overloads the constructor for deadline. Accepts date time in string format.
+     * Overloaded constructor for Deadline. Accepts date time as a LocalDateTime object.
      *
      * @param description Description of the task.
      * @param dateTime Date and time info of the task.

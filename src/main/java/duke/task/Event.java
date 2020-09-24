@@ -12,9 +12,15 @@ public class Event extends Task {
     public static final String TASK_TYPE = "E";
     public static final String IDENTIFIER = "/at";
 
-    /** The date and time info that it is at */
+    /** The date and time info that it is at. */
     private LocalDateTime dateTime;
 
+    /**
+     * Overloaded constructor for Event. Accepts date time as a LocalDateTime object.
+     *
+     * @param description Description of the Event.
+     * @param dateTime Date and time info of the Event.
+     */
     public Event(String description, LocalDateTime dateTime) {
         super(description, TASK_TYPE);
         setDateTime(dateTime);
