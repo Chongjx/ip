@@ -2,8 +2,8 @@
 
 ## Features 
 
-### Feature 1 
-Adding of a new Todo or Event or Deadline task.
+### Feature 1:
+Add a new Todo or Event or Deadline task into the task list.
 
 ## Usage
 
@@ -28,22 +28,174 @@ Example of usage:
 
 `Todo task 1`<br/>
 `Event event 2 /at 30 Sep 2020 15.00`<br/>
-`Deadline deadline 3 /by 30 09 20 03:00pm`<br/>
+`Deadline deadline 3 /by 30 09 20 03:00pm`
 
 Expected outcome:
 
-`Added a todo task [T][✘] task 1!` <br/>
+`Added a todo task [T][✘] task 1!`
 > `Now you have n task(s) in the list!`
 
-`Added a an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!` <br/>
+`Added a an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`
 > `Now you have n task(s) in the list!`
 
 `Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`
 >`Now you have n task(s) in the list!`
 
-### Feature 2
-Listing all the tasks in the task list.
+### Feature 2:
+List all the tasks in the task list.
 
 ## Usage
 
-### Keywords
+### Keyword
+#### `list`
+
+Example of usage:
+
+`list`
+
+Expected outcome:
+
+`Here is your list of task(s):`<br/>
+>`1.[T][✘] task 1` <br/>
+>`2.[E][✓] event 2 (At: 23 Sep 2020 01:00PM)` <br/>
+>`3.[D][✘] deadline 3 (By: 24 Sep 2020 05:00PM)`
+
+### Feature 3:
+List all the events and deadlines that occur on a specific date.
+
+## Usage
+
+### Keyword
+#### `on`
+
+The user enters the keyword followed by the date.
+
+Example of usage:
+
+`on 30 sep 2020`
+
+Expected outcome:
+
+`Here is the list of event(s) and deadline(s) on 30 Sep 2020:`<br/>
+>`1.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`<br/>
+>`2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`
+
+### Feature 4:
+Mark a task as done.
+
+## Usage
+
+### Keyword
+#### `done`
+
+The user enters the keyword followed by the <b>INDEX</b> of the task in the task list.  The <b>INDEX</b> must be a
+ positive integer 1, 2, 3, … 
+
+Example of usage:
+
+`done 1`
+
+Expected outcome:
+
+`Completed task 1!`
+>`[T][✓] task 1`
+
+### Feature 5:
+Delete a task from the list.
+
+## Usage
+
+### Keyword
+#### `delete`
+
+The user enters the keyword followed by the <b>INDEX</b> of the task in the task list.  The <b>INDEX</b> must be a
+ positive integer 1, 2, 3, … 
+
+Example of usage:
+
+`delete 1`
+
+Expected outcome:
+
+`I have removed the task!`
+>`[T][✓] task 1` <br/>
+`Now you have n task(s) in the list!`
+
+### Feature 6:
+Find task(s) that contain the specific keyword.
+
+## Usage
+
+### Keyword
+#### `find`
+
+The user enters the keyword command followed by the string of the keyword.
+
+*Note:*<br/>
+*The string of the keyword is case-sensitive.*
+
+Example of usage:
+
+`find 24`
+
+Expected outcome:
+
+`Found these task(s) that match the keyword "24":`
+>`1.[D][✘] Duke (By: 24 Sep 2020 05:00PM)` <br/>
+>`2.[E][✘] meeting (At: 24 Sep 2020 08:00AM)`
+
+### Feature 6:
+Automated saving and loading of the task list to a text file.
+
+## Usage
+
+On start-up, the program tries to load the saved task list from the text file. If the folder or file is not present
+, the program will create the folder and file respectively. The task list is automatically saved everytime any
+ changes is made.
+
+Expected outcome if no folder or file is found: <br/>
+`Looking for existing file...`<br/>
+`No saved file found!`
+
+Expected outcome if the saved data is found: <br/>
+`Looking for existing file...`<br/>
+`Found file, loading saved info...`<br/>
+`Successfully loaded saved info!`
+
+List of acceptable date time format:
+Date formats: 
+* dd-M-yy
+* dd-MM-yy
+* dd-MMM-yy
+* dd-M-yyyy
+* dd-MM-yyyy
+* dd-MMM-yyyy
+* dd/M/yy
+* dd/MM/yy
+* dd/MMM/yy
+* dd/M/yyyy
+* dd/MM/yyyy
+* dd/MMM/yyyy
+* dd M yy
+* dd MM yy
+* dd MMM yy
+* dd M yyyy
+* dd MM yyyy
+* dd MMM yyyy
+
+Time formats:
+* HH:mm
+* HH.mm
+* HHmm
+* hh:mma
+* hh.mma
+
+*Note:*<br/>
+*HH represents the time in 24hr format while hh represents the time in 12hr format. The 'a' in the 12hr format
+ represents 'AM' or 'PM'.
+
+Examples:<br/>
+`01-JAN-2020 06:00`<br/>
+`01/01/20 02:00`<br/>
+`01 01 2020 17.00`<br/>
+`01-jan-20 05.00pm`

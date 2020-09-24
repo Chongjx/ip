@@ -222,7 +222,7 @@ public class TaskManager {
                     taskOutputMessage = UIManager.INDENT_ONE_TAB + "There are no event or deadline on that date!";
                 } else {
                     taskOutputMessage =
-                            UIManager.INDENT_ONE_TAB + "Here is the list of event/deadline(s) on " +
+                            UIManager.INDENT_ONE_TAB + "Here is the list of event(s) and deadline(s) on " +
                                     taskDate.format(DateTimeManager.DATE_FORMAT) + ":";
                     int index = 1;
                     for (Task i : tasksOnDate) {
