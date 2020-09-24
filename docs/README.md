@@ -2,19 +2,19 @@
 
 ## Features 
 
-### Feature 1:
-Add a new Todo or Event or Deadline task into the task list.
+### Add a task into the list:
+Creates and add a new Todo or Event or Deadline task into the task list.
 
-## Usage
+### Usage
 
-### Keywords
-#### `todo` - Specifies a Todo task to be added.
-#### `event` - Specifies an Event task.
-#### `deadline` - Specifies a Deadline task to be added.
+#### Keywords
+`todo` - Specifies a Todo task to be added.<br/>
+`event` - Specifies an Event task.<br/>
+`deadline` - Specifies a Deadline task to be added.
 
-### Identifiers
-#### `/at` - Specifies the date and time information for the Event.
-#### `/by` - Specifies the date and time information for the Deadline
+#### Identifiers
+`/at` - Specifies the date and time information for the Event.<br/>
+`/by` - Specifies the date and time information for the Deadline.
 
 The user first enters the keyword to indicate the type of the task to be added, followed by the task description
 . The user is also required to enter the date and time information for Event and Deadline task after the respective
@@ -32,22 +32,23 @@ Example of usage:
 
 Expected outcome:
 
-`Added a todo task [T][✘] task 1!`
-> `Now you have n task(s) in the list!`
+`Added a todo task [T][✘] task 1!`<br/>
+`Now you have n task(s) in the list!`
 
-`Added a an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`
-> `Now you have n task(s) in the list!`
+`Added a an event [E][✘] event 2 (At: 30 Sep 2020 03:00PM)!`<br/>
+`Now you have n task(s) in the list!`
 
-`Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`
->`Now you have n task(s) in the list!`
+`Added a deadline task [D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)!`<br/>
+`Now you have n task(s) in the list!`
 
-### Feature 2:
-List all the tasks in the task list.
+### List all the tasks:
+List all the tasks in the task list, showing their task type, either Todo, event or deadline, done status and
+ description. Date and time info will also be displayed for event and deadline tasks. 
 
-## Usage
+### Usage
 
-### Keyword
-#### `list`
+#### Keyword
+`list`
 
 Example of usage:
 
@@ -56,17 +57,17 @@ Example of usage:
 Expected outcome:
 
 `Here is your list of task(s):`<br/>
->`1.[T][✘] task 1` <br/>
->`2.[E][✓] event 2 (At: 23 Sep 2020 01:00PM)` <br/>
->`3.[D][✘] deadline 3 (By: 24 Sep 2020 05:00PM)`
+`1.[T][✘] task 1` <br/>
+`2.[E][✓] event 2 (At: 23 Sep 2020 01:00PM)` <br/>
+`3.[D][✘] deadline 3 (By: 24 Sep 2020 05:00PM)`
 
-### Feature 3:
-List all the events and deadlines that occur on a specific date.
+### List all events and deadlines that occur on a specific date:
+Find and display all the events and deadlines in the task list that occur on a specific date.
 
-## Usage
+### Usage
 
-### Keyword
-#### `on`
+#### Keyword
+`on`
 
 The user enters the keyword followed by the date.
 
@@ -77,16 +78,16 @@ Example of usage:
 Expected outcome:
 
 `Here is the list of event(s) and deadline(s) on 30 Sep 2020:`<br/>
->`1.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`<br/>
->`2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`
+`1.[D][✘] deadline 3 (By: 30 Sep 2020 03:00PM)`<br/>
+`2.[E][✘] event 2 (At: 30 Sep 2020 03:00PM)`
 
-### Feature 4:
-Mark a task as done.
+### Mark task as done:
+Mark a completed task as done.
 
-## Usage
+### Usage
 
-### Keyword
-#### `done`
+#### Keyword
+`done`
 
 The user enters the keyword followed by the <b>INDEX</b> of the task in the task list.  The <b>INDEX</b> must be a
  positive integer 1, 2, 3, … 
@@ -98,15 +99,15 @@ Example of usage:
 Expected outcome:
 
 `Completed task 1!`
->`[T][✓] task 1`
+`[T][✓] task 1`
 
-### Feature 5:
-Delete a task from the list.
+### Delete a task from the list:
+Delete an unwanted task from the task list.
 
-## Usage
+### Usage
 
-### Keyword
-#### `delete`
+#### Keyword
+`delete`
 
 The user enters the keyword followed by the <b>INDEX</b> of the task in the task list.  The <b>INDEX</b> must be a
  positive integer 1, 2, 3, … 
@@ -118,16 +119,16 @@ Example of usage:
 Expected outcome:
 
 `I have removed the task!`
->`[T][✓] task 1` <br/>
+`[T][✓] task 1` <br/>
 `Now you have n task(s) in the list!`
 
-### Feature 6:
-Find task(s) that contain the specific keyword.
+### List all the tasks that contain the keyword:
+Find and list all the tasks that contain the specific keyword.
 
-## Usage
+### Usage
 
-### Keyword
-#### `find`
+#### Keyword
+`find`
 
 The user enters the keyword command followed by the string of the keyword.
 
@@ -141,13 +142,13 @@ Example of usage:
 Expected outcome:
 
 `Found these task(s) that match the keyword "24":`
->`1.[D][✘] Duke (By: 24 Sep 2020 05:00PM)` <br/>
->`2.[E][✘] meeting (At: 24 Sep 2020 08:00AM)`
+`1.[D][✘] Duke (By: 24 Sep 2020 05:00PM)` <br/>
+`2.[E][✘] meeting (At: 24 Sep 2020 08:00AM)`
 
-### Feature 6:
-Automated saving and loading of the task list to a text file.
+### Saving and loading of the list:
+Automated saving and loading of the task list to and fro a text file.
 
-## Usage
+### Usage
 
 On start-up, the program tries to load the saved task list from the text file. If the folder or file is not present
 , the program will create the folder and file respectively. The task list is automatically saved everytime any
@@ -162,7 +163,7 @@ Expected outcome if the saved data is found: <br/>
 `Found file, loading saved info...`<br/>
 `Successfully loaded saved info!`
 
-List of acceptable date time format:
+### List of acceptable date time format:
 Date formats: 
 * dd-M-yy
 * dd-MM-yy
