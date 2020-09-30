@@ -18,7 +18,7 @@ Creates and add a new Todo, Event or Deadline task into the task list.
 
 The user first enters the keyword to indicate the type of the task to be added, followed by the task description
 . The user is also required to enter the respective identifiers followed by the date and time information for Event and
- Deadline task.
+ Deadline task. Date and time information must be provided for Event and Deadline task.
 
 *Note:*<br/>
 *The keywords are case-insensitive while the identifiers are case-sensitive. A list of acceptable date and time
@@ -130,7 +130,7 @@ Find and list all the tasks that contain the specific keyword.
 #### Keyword
 `find`
 
-The user enters the keyword command followed by the string of the keyword.
+The user enters the keyword followed by the string of the keyword.
 
 *Note:*<br/>
 *The string of the keyword is case-sensitive.*
