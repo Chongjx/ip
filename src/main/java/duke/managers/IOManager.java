@@ -127,6 +127,8 @@ public class IOManager {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "No saved file found!");
         } catch (IllegalStateException exception) {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "Unable to load saved info, file may be corrupted!");
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + "Some data may be corrupted!");
         } catch (DukeException exception) {
             loadTaskMessage = loadTaskMessage.concat(UIManager.INDENT_ONE_TAB + exception);
         }
